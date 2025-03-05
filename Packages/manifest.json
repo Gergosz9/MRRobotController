@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "com.meta.xr.mrutilitykit": "72.0.0",
+    "com.meta.xr.sdk.audio": "72.0.0",
+    "com.meta.xr.sdk.core": "72.0.0",
     "com.microsoft.mixedreality.openxr": "1.11.2",
     "com.microsoft.mixedreality.visualprofiler": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
     "com.microsoft.mrtk.graphicstools.unity": "0.8.0",
