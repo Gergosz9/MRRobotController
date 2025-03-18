@@ -5,82 +5,82 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Audio/AudioLoFiExample.unity
     guid: 55d611c1e8a4195458154cbf73dde755
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Audio/AudioOcclusionExample.unity
     guid: 02279def028403945bcd5eeaa3944ed4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BoundsControlExamples.unity
     guid: 384e6c80fec551842a329aa6fdb67c00
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/BoundsControlRuntimeExample.unity
     guid: 5c5bd8aafc6e8f24688a5be83e975c2e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CanvasExample.unity
     guid: 24da6686da5c91c40add71f019626f80
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Experimental/CanvasExampleSimpleActionButton.unity
     guid: a99fa153bbaaf01439c1d1d688fa086b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CanvasUITearsheet.unity
     guid: 826e2653482e5304ca8be3552e34f5c9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ClippingExamples.unity
     guid: 8fba33ef2ac2d1241a18842f1f6ffcc2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ClippingInstancedExamples.unity
     guid: ddd904b1863ddfc44aab4e4767d47cfa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DiagnosticsDemo.unity
     guid: f33adb2534f521e4a9892edb30fae861
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DialogExample.unity
     guid: 9a9b5ebb20dad464f82939c1919f3c29
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DictationExample.unity
     guid: dc82ad31a6851824b9bb8475ceffd466
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DirectionalIndicatorExample.unity
     guid: 4404a8cddee74154ab66fbfbe8f4b745
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DisableInteractorsExample.unity
     guid: 39e159e61b3eabf4b8bee31c6bd084f6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DwellExample.unity
     guid: 214a3eff40efe654484f95e0bcb7d473
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeGazeExample.unity
     guid: 34c7b3d86b487dd48818ba9904ee5c31
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeTracking/EyeTrackingBasicSetupExample.unity
     guid: 47429db7b23099b439a575806956c0ec
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeTracking/EyeTrackingExampleNavigationExample.unity
     guid: 88bf1ad621921504d9026542db6bfa45
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeTracking/EyeTrackingTargetPositioningExample.unity
     guid: cea45ccd3c7d723488a2135739e001b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeTracking/EyeTrackingTargetSelectionExample.unity
     guid: d5666cf16c60aca459a835a4df6ce08f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EyeTracking/EyeTrackingVisualizerExample.unity
     guid: 49ee725d9982676498b463a649e727a2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FontIconExample.unity
     guid: a3ce810af8da0ff438d98e8ebac2f69c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HandInteractionExamples.unity
     guid: 1300a9dceb058844b865199dcd557fc7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/HandMenuExamples.unity
     guid: 160f5fe1138c53249862f20e854a6edd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InputFieldExamples.unity
     guid: e71ef4cb633b9a3468b05f4508f95ad8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InteractableButtonExamples.unity
     guid: 889ca949e5d6ea548835fdb4c00c0e3f
   - enabled: 1
