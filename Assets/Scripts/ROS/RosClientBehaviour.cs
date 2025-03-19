@@ -4,6 +4,6 @@
     using Newtonsoft.Json;
     internal class RosClientBehaviour : MonoBehaviour
     {
-        public 
+
     }
 }
