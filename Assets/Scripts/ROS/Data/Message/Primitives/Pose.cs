@@ -5,7 +5,7 @@ namespace Assets.Scripts.ROS.Data.Message.Primitives
     /// <summary>
     /// Naming convention: https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/Pose.html
     /// </summary>
-    internal class Pose : MonoBehaviour
+    internal class Pose
     {
         public Vector3 position { get; private set; }
         public Quaternion orientation { get; private set; }

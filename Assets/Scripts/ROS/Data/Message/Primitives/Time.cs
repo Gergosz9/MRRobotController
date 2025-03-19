@@ -5,7 +5,7 @@
     /// <summary>
     /// Naming convention: https://docs.ros.org/en/noetic/api/std_msgs/html/msg/Time.html
     /// </summary>
-    internal class Time : MonoBehaviour
+    internal class Time
     {
         public uint sec { get; private set; }
         public uint nanosec { get; private set; }

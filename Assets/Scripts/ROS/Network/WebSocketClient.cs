@@ -3,16 +3,15 @@
     using UnityEngine;
     using WebSocketSharp;
     using Newtonsoft.Json;
+    using System.Threading.Tasks;
 
     internal class WebSocketClient : MonoBehaviour
     {
-        private WebSocket webSocket;
+        private static string serverAddress = "ws://localhost:8765";
+        private static WebSocket webSocket = new WebSocket(serverAddress);
 
-        void Start()
+        public void Connect()
         {
-            string serverAddress = "ws://cg.iit.bme.hu:16789/wsURL";
-            webSocket = new WebSocket(serverAddress);
-
             webSocket.OnOpen += (sender, e) => Debug.Log("WebSocket opened");
             webSocket.OnMessage += (sender, e) => HandleMessage(e.Data);
             webSocket.OnError += (sender, e) => Debug.LogError("WebSocket error: " + e.Message);
@@ -21,7 +20,7 @@
             webSocket.Connect();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             webSocket.Close();
         }
@@ -35,6 +34,22 @@
         {
             string jsonMessage = JsonConvert.SerializeObject(message);
             webSocket.Send(jsonMessage);
+        }
+
+        public void Subscribe(string topic)
+        {
+            string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\"}}";
+            SendMessage(message);
+        }
+
+        public void AddMessageListener(System.Action<string> listener)
+        {
+            webSocket.OnMessage += (sender, e) => listener(e.Data);
+        }
+
+        public void AddOpenListener(System.Action listener)
+        {
+            webSocket.OnOpen += (sender, e) => listener?.Invoke();
         }
     }
 

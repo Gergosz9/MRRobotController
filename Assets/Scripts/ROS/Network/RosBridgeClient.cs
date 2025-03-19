@@ -9,9 +9,17 @@
 
     internal class ROSBridgeClient : MonoBehaviour
     {
-        public WebSocketClient webSocketClient { get; private set; }
+        [SerializeField]
+        public WebSocketClient webSocketClient;
 
+        
         private void Start()
+        {
+            webSocketClient.Connect();
+            SubscribeToTopics();
+        }
+
+        private void SubscribeToTopics()
         {
             List<string> topics = new List<string>();
             topics.Add(Topic.scan);
@@ -20,16 +28,8 @@
             topics.Add(Topic.plan);
             topics.Add(Topic.plansmoothed);
 
-            SubscribeToTopics(topics);
-        }
-
-        private void SubscribeToTopic(string topic)
-        {
-            webSocketClient.SendMessage($"{{\"op\": \"subscribe\", \"topic\": \"{topic}\"}}");
-        }
-        private void SubscribeToTopics(List<string> topics)
-        {
-            topics.ForEach(topic => SubscribeToTopic(topic));
+            topics.ForEach(topic => webSocketClient.Subscribe(topic));
+            webSocketClient.AddMessageListener(HandleMessage);
         }
         private string GetMessageTopic(string jsonMessage)
         {
