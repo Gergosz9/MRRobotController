@@ -7,8 +7,8 @@ namespace Assets.Scripts.ROS.Data.Message.Primitives
     /// </summary>
     internal class Pose
     {
-        public Vector3 position { get; private set; }
-        public Quaternion orientation { get; private set; }
+        public Vector3 position { get; set; }
+        public Quaternion orientation { get; set; }
 
         public Pose()
         {

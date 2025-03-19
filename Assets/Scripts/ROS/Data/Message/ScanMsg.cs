@@ -3,15 +3,15 @@
     using Assets.Scripts.ROS.Data.Message.Primitives;
     internal class ScanMsg : Msg
     {
-        public float angle_min { get; private set; }
-        public float angle_max { get; private set; }
-        public float angle_increment { get; private set; }
-        public float time_increment { get; private set; }
-        public float scan_time { get; private set; }
-        public float range_min { get; private set; }
-        public float range_max { get; private set; }
-        public float[] ranges { get; private set; }
-        public float[] intensities { get; private set; }
+        public float angle_min { get; set; }
+        public float angle_max { get; set; }
+        public float angle_increment { get; set; }
+        public float time_increment { get; set; }
+        public float scan_time { get; set; }
+        public float range_min { get; set; }
+        public float range_max { get; set; }
+        public float[] ranges { get; set; }
+        public float[] intensities { get; set; }
         public ScanMsg()
         {
             angle_min = 0.0f;

@@ -3,6 +3,6 @@
     using Assets.Scripts.ROS.Data.Message.Primitives;
     internal abstract class Msg
     {
-        public Header header { get; protected set; }
+        public Header header { get; set; }
     }
 }

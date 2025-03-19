@@ -4,7 +4,7 @@
 
     internal class GoalPoseMsg : Msg
     {
-        public Pose pose { get; private set; }
+        public Pose pose { get; set; }
         public GoalPoseMsg()
         {
             pose = new Pose();

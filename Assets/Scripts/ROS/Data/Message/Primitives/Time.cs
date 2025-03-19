@@ -7,8 +7,8 @@
     /// </summary>
     internal class Time
     {
-        public uint sec { get; private set; }
-        public uint nanosec { get; private set; }
+        public uint sec { get; set; }
+        public uint nanosec { get; set; }
         public Time()
         {
             this.sec = 0;

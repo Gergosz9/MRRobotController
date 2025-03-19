@@ -12,10 +12,10 @@
 
         public void Connect()
         {
-            webSocket.OnOpen += (sender, e) => Debug.Log("WebSocket opened");
+            webSocket.OnOpen += (sender, e) => Debug.Log("[WebSocket] Opened");
             webSocket.OnMessage += (sender, e) => HandleMessage(e.Data);
-            webSocket.OnError += (sender, e) => Debug.LogError("WebSocket error: " + e.Message);
-            webSocket.OnClose += (sender, e) => Debug.Log("WebSocket closed with reason: " + e.Reason);
+            webSocket.OnError += (sender, e) => Debug.LogError("[WebSocket] Error: " + e.Message);
+            webSocket.OnClose += (sender, e) => Debug.Log("[WebSocket] Closed with reason: " + e.Reason);
 
             webSocket.Connect();
         }
@@ -27,7 +27,7 @@
 
         private void HandleMessage(string message)
         {
-            Debug.Log("Received message: " + message);
+            Debug.Log($"[WebSocket] Received message: \"{message.Substring(0, 32)}...\"");
         }
 
         public void SendMessage(object message)

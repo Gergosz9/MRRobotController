@@ -6,11 +6,11 @@
     {
         public class Info
         {
-            public Time map_load_time { get; private set; }
-            public float resolution { get; private set; }
-            public uint width { get; private set; }
-            public uint height { get; private set; }
-            public Pose origin { get; private set; }
+            public Time map_load_time { get; set; }
+            public float resolution { get; set; }
+            public uint width { get; set; }
+            public uint height { get; set; }
+            public Pose origin { get; set; }
 
             public Info()
             {

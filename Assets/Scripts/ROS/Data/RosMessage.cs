@@ -3,13 +3,13 @@
     using Assets.Scripts.ROS.Data.Message;
     using Assets.Scripts.ROS.Data.Message.Primitives;
 
-    internal class RosMessage
+    internal class RosMessage<T> where T : Msg
     {
-        public string op { get; private set; }
-        public string topic { get; private set; }
-        public Msg msg { get; private set; }
+        public string op { get; set; }
+        public string topic { get; set; }
+        public T msg { get; set; }
 
-        public RosMessage(string op, string topic, Msg msg)
+        public RosMessage(string op, string topic, T msg)
         {
             this.op = op;
             this.topic = topic;

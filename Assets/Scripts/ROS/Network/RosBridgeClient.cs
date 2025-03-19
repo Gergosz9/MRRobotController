@@ -12,7 +12,7 @@
         [SerializeField]
         public WebSocketClient webSocketClient;
 
-        
+
         private void Start()
         {
             webSocketClient.Connect();
@@ -41,65 +41,22 @@
         {
             string topic = GetMessageTopic(jsonMessage);
 
-            Msg msg;
             switch (topic)
             {
                 case Topic.scan:
-                    {
-                        msg = JsonConvert.DeserializeObject<ScanMsg>(jsonMessage);
-                        //Handle message
-                        break;
-                    }
                 case Topic.scansim:
-                    {
-                        msg = JsonConvert.DeserializeObject<ScanMsg>(jsonMessage);
-                        //Handle message
-                        break;
-                    }
+                    RosMessage<ScanMsg> scanMessage = JsonConvert.DeserializeObject<RosMessage<ScanMsg>>(jsonMessage);
+                    break;
                 case Topic.costmap:
-                    {
-                        msg = JsonConvert.DeserializeObject<CostMapMsg>(jsonMessage);
-                        //Handle message
-                        break;
-                    }
+                    RosMessage<CostMapMsg> costmapMessage = JsonConvert.DeserializeObject<RosMessage<CostMapMsg>>(jsonMessage);
+                    break;
                 case Topic.plan:
-                    {
-                        msg = JsonConvert.DeserializeObject<PlanMsg>(jsonMessage);
-                        //Handle message
-                        break;
-                    }
                 case Topic.plansmoothed:
-                    {
-                        msg = JsonConvert.DeserializeObject<PlanMsg>(jsonMessage);
-                        //Handle message
-                        break;
-                    }
+                    RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    break;
                 default:
-                    {
-                        Debug.LogError("Unknown topic: " + topic);
-                        return;
-                    }
-            }
-
-            double milisecondsnow = TimeSpan.FromTicks(DateTime.Now.Ticks).TotalMilliseconds;
-            double milisecondsmessage = TimeSpan.FromTicks(msg.header.stamp.sec + msg.header.stamp.nanosec / 1000000).TotalMilliseconds;
-
-            Debug.Log($"Handled message: [{msg.header.frame_id}] after {milisecondsnow - milisecondsmessage} ms");
-        }
-        public void PublishMessage(Msg msg)
-        {
-            webSocketClient.SendMessage(msg);
-        }
-
-        public void SetWebSocketClient(WebSocketClient webSocketClient)
-        {
-            try
-            {
-                this.webSocketClient = webSocketClient;
-            }
-            catch
-            {
-                Debug.LogError("Failed to set WebSocketClient");
+                    Debug.LogError($"Unknown topic: {topic}");
+                    return;
             }
         }
     }
