@@ -27,7 +27,7 @@
 
         private void HandleMessage(string message)
         {
-            Debug.Log($"[WebSocket] Received message: \"{message.Substring(0, 32)}...\"");
+            //Debug.Log($"[WebSocket] Received message: \"{message.Substring(0, 32)}...\"");
         }
 
         public void SendMessage(object message)
