@@ -6,6 +6,9 @@
     using System.Collections.Generic;
     using Assets.Scripts.ROS.Data.Message;
     using System;
+    using System.Threading;
+    using System.IO;
+    using System.Text;
 
     internal class ROSBridgeClient : MonoBehaviour
     {
@@ -15,18 +18,21 @@
 
         private void Start()
         {
+            webSocketClient.AddOpenListener(() => SubscribeToTopics());
             webSocketClient.Connect();
-            SubscribeToTopics();
         }
 
         private void SubscribeToTopics()
         {
-            List<string> topics = new List<string>();
-            topics.Add(Topic.scan);
-            topics.Add(Topic.scansim);
-            topics.Add(Topic.costmap);
-            topics.Add(Topic.plan);
-            topics.Add(Topic.plansmoothed);
+            List<string> topics = new List<string>
+            {
+                Topic.scan,
+                Topic.scansim,
+                Topic.costmap,
+                Topic.plan,
+                Topic.plansmoothed,
+                Topic.globalpath
+            };
 
             topics.ForEach(topic => webSocketClient.Subscribe(topic));
             webSocketClient.AddMessageListener(HandleMessage);
@@ -37,23 +43,30 @@
             return jsonObject["topic"].ToString();
         }
 
+        int logcounter = 0;
         public void HandleMessage(string jsonMessage)
         {
             string topic = GetMessageTopic(jsonMessage);
+            Debug.Log(jsonMessage);
+            File.WriteAllText($"C:\\Users\\Eragon\\Documents\\Egyetem\\Onlab\\ROSlog2\\log{logcounter++}.json", jsonMessage);
 
             switch (topic)
             {
                 case Topic.scan:
                 case Topic.scansim:
                     RosMessage<ScanMsg> scanMessage = JsonConvert.DeserializeObject<RosMessage<ScanMsg>>(jsonMessage);
+                    //handle scan message here
                     test(scanMessage);
                     break;
                 case Topic.costmap:
                     RosMessage<CostMapMsg> costmapMessage = JsonConvert.DeserializeObject<RosMessage<CostMapMsg>>(jsonMessage);
+                    //handle costmap message here
                     break;
                 case Topic.plan:
                 case Topic.plansmoothed:
+                case Topic.globalpath:
                     RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    //handle plan message here
                     break;
                 default:
                     Debug.LogError($"Unknown topic: {topic}");
@@ -90,7 +103,6 @@
 
                     prevousdot = dot;
                 }
-                //Debug.DrawLine(dot, dot + new Vector3(0, .3f, 0), Color.red, .2f);
             }
             Debug.Log(scanMessage.msg.angle_min);
         }
