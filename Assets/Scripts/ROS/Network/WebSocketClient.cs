@@ -1,24 +1,23 @@
 ﻿namespace Assets.Scripts.ROS.Network
 {
-    using UnityEngine;
     using NativeWebSocket;
-    using Newtonsoft.Json;
-    using System.Threading.Tasks;
     using System;
     using System.Text;
+    using UnityEngine;
 
-    internal class WebSocketClient : MonoBehaviour
+    public class WebSocketClient : MonoBehaviour
     {
-        private static string serverAddress = "ws://192.168.100.81:9090";
+        public static string serverAddress = "ws://192.168.100.81:9090";
         private static WebSocket webSocket = new WebSocket(serverAddress);
+        public GUILogger logger;
 
         public void Connect()
         {
-            Debug.Log("[WebSocket] Connecting...");
-            AddOpenListener(() => Debug.Log("[WebSocket] Connected"));
-            AddMessageListener((message) => Debug.Log("[WebSocket] Message: " + message));
-            AddErrorListener((e) => Debug.LogError("[WebSocket] Error: " + e));
-            AddCloseListener((e) => Debug.Log("[WebSocket] Closed: " + e));
+            logger.Log("[WebSocket] Connecting...");
+            AddOpenListener(() => logger.Log("[WebSocket] Connected"));
+            AddMessageListener((message) => logger.Log("[WebSocket] Message: " + message));
+            AddErrorListener((e) => logger.LogError("[WebSocket] Error: " + e));
+            AddCloseListener((e) => logger.Log("[WebSocket] Closed: " + e));
 
             webSocket.Connect();
         }
@@ -38,7 +37,7 @@
         {
             string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\" }}";
             SendMessage(message);
-            Debug.Log("Message sent: " + message);
+            logger.Log("Message sent: " + message);
         }
 
         public void AddMessageListener(System.Action<string> listener)

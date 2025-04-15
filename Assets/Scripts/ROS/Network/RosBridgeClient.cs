@@ -1,22 +1,19 @@
 ﻿namespace Assets.Scripts.ROS.Network
 {
-    using UnityEngine;
-    using Newtonsoft.Json;
-    using Assets.Scripts.ROS.Data.Message.Primitives;
-    using System.Collections.Generic;
     using Assets.Scripts.ROS.Data.Message;
-    using System;
-    using System.Threading;
-    using System.IO;
-    using System.Text;
+    using Assets.Scripts.ROS.Data.Message.Primitives;
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using UnityEngine;
 
     internal class ROSBridgeClient : MonoBehaviour
     {
+        public GUILogger logger;
         [SerializeField]
         public WebSocketClient webSocketClient;
 
 
-        private void Start()
+        public void StartCommunication()
         {
             webSocketClient.AddOpenListener(() => SubscribeToTopics());
             webSocketClient.Connect();
@@ -47,8 +44,8 @@
         public void HandleMessage(string jsonMessage)
         {
             string topic = GetMessageTopic(jsonMessage);
-            Debug.Log(jsonMessage);
-            File.WriteAllText($"C:\\Users\\Eragon\\Documents\\Egyetem\\Onlab\\ROSlog2\\log{logcounter++}.json", jsonMessage);
+            logger.Log(jsonMessage);
+            //File.WriteAllText($"C:\\Users\\Eragon\\Documents\\Egyetem\\Onlab\\ROSlog2\\log{logcounter++}.json", jsonMessage);
 
             switch (topic)
             {
@@ -87,7 +84,8 @@
                     range * Mathf.Sin(angle)
                 );
 
-                if(range >= .5f){
+                if (range >= .5f)
+                {
                     if (Vector3.Distance(dot, prevousdot) < .5f)
                     {
                         Debug.DrawLine(prevousdot, dot, Color.green, .08f);
