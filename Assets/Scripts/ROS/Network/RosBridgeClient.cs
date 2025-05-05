@@ -12,10 +12,13 @@
         [SerializeField]
         public WebSocketClient webSocketClient;
 
+        public void Start()
+        {
+            webSocketClient.AddOpenListener(() => SubscribeToTopics());
+        }
 
         public void StartCommunication()
         {
-            webSocketClient.AddOpenListener(() => SubscribeToTopics());
             webSocketClient.Connect();
         }
 
