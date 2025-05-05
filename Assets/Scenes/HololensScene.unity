@@ -972,7 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d1e247b88aa9441931290366b9f4ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webSocketClient: {fileID: 0}
+  webSocketClient: {fileID: 1137696261}
 --- !u!4 &910659820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5905304275062509466, guid: df4899a7e84d2794a9428337bba8a253, type: 3}
@@ -2383,7 +2383,18 @@ MonoBehaviour:
     either check if it is null or you should not destroy the object.
 
     [WebSocket]
-    Error: Unable to connect to the remote server'
+    Error: Unable to connect to the remote server
+
+    [WebSocket] Error: Unable
+    to connect to the remote server
+
+    [WebSocket] Closed: Abnormal
+
+    [WebSocket]
+    Error: Unable to connect to the remote server
+
+    [WebSocket] Error: Unable
+    to connect to the remote server'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

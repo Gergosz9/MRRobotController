@@ -9,11 +9,12 @@
 
     internal class ROSBridgeClient : MonoBehaviour
     {
-        public GUILogger logger;
         [SerializeField]
-        public WebSocketClient webSocketClient;
+        private GUILogger logger;
         [SerializeField]
-        public LidarDisplay lidarDisplay;
+        private WebSocketClient webSocketClient;
+        [SerializeField]
+        private LidarDisplay lidarDisplay;
 
         public void Start()
         {
@@ -47,7 +48,6 @@
             return jsonObject["topic"].ToString();
         }
 
-        int logcounter = 0;
         public void HandleMessage(string jsonMessage)
         {
             string topic = GetMessageTopic(jsonMessage);

@@ -7,9 +7,11 @@
 
     public class WebSocketClient : MonoBehaviour
     {
-        public static string serverAddress = "ws://localhost:8765";
+        [SerializeField]
+        private static string serverAddress = "ws://localhost:8765";
         private static WebSocket webSocket = new WebSocket(serverAddress);
-        public GUILogger logger;
+        [SerializeField]
+        private GUILogger logger;
 
         private void Start()
         {
@@ -31,7 +33,7 @@
             webSocket.Close();
         }
 
-        public void SendMessage(string message)
+        public new void SendMessage(string message)
         {
             var encoded = Encoding.UTF8.GetBytes(message);
             webSocket.Send(encoded);
