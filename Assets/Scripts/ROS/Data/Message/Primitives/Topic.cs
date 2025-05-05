@@ -9,5 +9,6 @@
         public const string goalpose = "/goal_pose";
         public const string plan = "/plan";
         public const string plansmoothed = "/plan_smoothed";
+        public const string globalpath = "/global_path"; //plan #3
     }
 }

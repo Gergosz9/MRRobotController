@@ -1,21 +1,27 @@
 ﻿namespace Assets.Scripts.ROS.Network
 {
+    using NativeWebSocket;
+    using System;
+    using System.Text;
     using UnityEngine;
-    using WebSocketSharp;
-    using Newtonsoft.Json;
-    using System.Threading.Tasks;
 
-    internal class WebSocketClient : MonoBehaviour
+    public class WebSocketClient : MonoBehaviour
     {
-        private static string serverAddress = "ws://localhost:8765";
+        public static string serverAddress = "ws://localhost:8765";
         private static WebSocket webSocket = new WebSocket(serverAddress);
+        public GUILogger logger;
+
+        private void Start()
+        {
+            AddOpenListener(() => logger.Log("[WebSocket] Connected"));
+            AddMessageListener((message) => logger.Log("[WebSocket] Message: " + message));
+            AddErrorListener((e) => logger.Log("[WebSocket] Error: " + e));
+            AddCloseListener((e) => logger.Log("[WebSocket] Closed: " + e));
+        }
 
         public void Connect()
         {
-            webSocket.OnOpen += (sender, e) => Debug.Log("[WebSocket] Opened");
-            webSocket.OnMessage += (sender, e) => HandleMessage(e.Data);
-            webSocket.OnError += (sender, e) => Debug.LogError("[WebSocket] Error: " + e.Message);
-            webSocket.OnClose += (sender, e) => Debug.Log("[WebSocket] Closed with reason: " + e.Reason);
+            logger.Log("[WebSocket] Connecting...");
 
             webSocket.Connect();
         }
@@ -25,31 +31,54 @@
             webSocket.Close();
         }
 
-        private void HandleMessage(string message)
+        public void SendMessage(string message)
         {
-            //Debug.Log($"[WebSocket] Received message: \"{message.Substring(0, 32)}...\"");
-        }
-
-        public void SendMessage(object message)
-        {
-            string jsonMessage = JsonConvert.SerializeObject(message);
-            webSocket.Send(jsonMessage);
+            var encoded = Encoding.UTF8.GetBytes(message);
+            webSocket.Send(encoded);
         }
 
         public void Subscribe(string topic)
         {
-            string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\"}}";
+            string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\" }}";
             SendMessage(message);
+            logger.Log("Message sent: " + message);
         }
 
         public void AddMessageListener(System.Action<string> listener)
         {
-            webSocket.OnMessage += (sender, e) => listener(e.Data);
+            webSocket.OnMessage += (bytes) =>
+            {
+                listener(System.Text.Encoding.UTF8.GetString(bytes));
+            };
         }
 
         public void AddOpenListener(System.Action listener)
         {
-            webSocket.OnOpen += (sender, e) => listener?.Invoke();
+            webSocket.OnOpen += () =>
+            {
+                listener();
+            };
+        }
+
+        public void AddCloseListener(System.Action<WebSocketCloseCode> listener)
+        {
+            webSocket.OnClose += (e) =>
+            {
+                listener(e);
+            };
+        }
+
+        public void AddErrorListener(System.Action<string> listener)
+        {
+            webSocket.OnError += (e) =>
+            {
+                listener(e);
+            };
+        }
+
+        internal void AddOpenListener(object v)
+        {
+            throw new NotImplementedException();
         }
     }
 
