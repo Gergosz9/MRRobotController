@@ -35,6 +35,25 @@ public class PositionManager : MonoBehaviour
      */
     public void SendRobotTo(Pose goal)
     {
+        // Translate the goal position to the robot's local coordinates.
+        Pose translatedGoal = TranslateToROSPose(goal);
+        // Send the control message to the robot.
+        string message = JsonConvert.SerializeObject(new RosMessage<GoalPoseMsg>{
+            op = "publish",
+            topic = "/goal_pose",
+            msg = new GoalPoseMsg{
+                header = new Header{
+                    stamp = new TimeStamp{
+                        sec = (int)Time.time,
+                        nsec = (int)((Time.time - (int)Time.time) * 1e9)
+                    },
+                    frame_id = "base_link"
+                },
+                pose = translatedGoal
+            }
+        });
+        webSocketClient.SendMessage(message);
+        logger.Log("Sending goal: " + translatedGoal.ToString());
 
     }
 
