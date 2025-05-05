@@ -42,6 +42,13 @@ PluginImporter:
         Exclude iOS: 1
         Exclude tvOS: 1
   - first:
+      Android: Android
+    second:
+      enabled: 0
+      settings:
+        AndroidSharedLibraryType: Executable
+        CPU: ARMv7
+  - first:
       Any: 
     second:
       enabled: 0
@@ -49,36 +56,45 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
-      enabled: 1
+      enabled: 0
       settings:
+        CPU: AnyCPU
         DefaultValueInitialized: true
         OS: Windows
   - first:
       Standalone: Linux64
     second:
       enabled: 0
-      settings: {}
+      settings:
+        CPU: None
   - first:
       Standalone: OSXUniversal
     second:
       enabled: 0
-      settings: {}
+      settings:
+        CPU: None
   - first:
       Standalone: Win
     second:
       enabled: 0
-      settings: {}
+      settings:
+        CPU: None
   - first:
       Standalone: Win64
     second:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: x86_64
+        CPU: None
   - first:
       Windows Store Apps: WindowsStoreApps
     second:
       enabled: 0
-      settings: {}
+      settings:
+        CPU: AnyCPU
+        DontProcess: false
+        PlaceholderPath: 
+        SDK: AnySDK
+        ScriptingBackend: AnyScriptingBackend
   - first:
       iPhone: iOS
     second:
