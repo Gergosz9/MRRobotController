@@ -1,6 +1,7 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
+    using UnityEngine;
 
     internal class GoalPoseMsg : Msg
     {

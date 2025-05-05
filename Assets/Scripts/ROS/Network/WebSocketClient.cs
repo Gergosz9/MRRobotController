@@ -7,7 +7,7 @@
 
     public class WebSocketClient : MonoBehaviour
     {
-        public static string serverAddress = "ws://192.168.100.81:9090";
+        public static string serverAddress = "ws://localhost:8765";
         private static WebSocket webSocket = new WebSocket(serverAddress);
         public GUILogger logger;
 
@@ -15,9 +15,10 @@
         {
             AddOpenListener(() => logger.Log("[WebSocket] Connected"));
             AddMessageListener((message) => logger.Log("[WebSocket] Message: " + message));
-            AddErrorListener((e) => logger.LogError("[WebSocket] Error: " + e));
+            AddErrorListener((e) => logger.Log("[WebSocket] Error: " + e));
             AddCloseListener((e) => logger.Log("[WebSocket] Closed: " + e));
         }
+
         public void Connect()
         {
             logger.Log("[WebSocket] Connecting...");

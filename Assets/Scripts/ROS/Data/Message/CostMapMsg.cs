@@ -1,6 +1,8 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
+    using UnityEngine;
+    using Time = Primitives.Time;
 
     internal class CostMapMsg : Msg
     {
