@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PositionManager : MonoBehaviour
 {
-    public GUILogger logger;
-    public WebSocketClient webSocketClient;
+    [SerializeField]
+    private GUILogger logger;
+
+    [SerializeField]
     static Pose relativeCenter = new Pose(Vector3.zero, Quaternion.identity);
+
     public Pose RelativeCenter
     {
         get { return relativeCenter; }

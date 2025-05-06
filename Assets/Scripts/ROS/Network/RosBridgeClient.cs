@@ -68,6 +68,7 @@
                 case Topic.plansmoothed:
                 case Topic.globalpath:
                     RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    //handle plan message here
                     break;
                 default:
                     Debug.LogError($"[ROSBridgeClient] Unknown topic: {topic}");

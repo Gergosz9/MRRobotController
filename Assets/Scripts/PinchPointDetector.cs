@@ -10,11 +10,11 @@ public class PinchPointDetector : MonoBehaviour
 {
     private HandsAggregatorSubsystem aggregator;
     [SerializeField]
-    MRTKRayInteractor rayInteractorRight;
+    private MRTKRayInteractor rayInteractorRight;
     [SerializeField]
-    MRTKRayInteractor rayInteractorLeft;
+    private MRTKRayInteractor rayInteractorLeft;
     [SerializeField]
-    GameObject previewPointer;
+    private GameObject previewPointer;
 
     private void Start()
     {
