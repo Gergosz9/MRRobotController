@@ -10,8 +10,6 @@
         [SerializeField]
         private static string serverAddress = "ws://192.168.100.81:9090";
         private static WebSocket webSocket = new WebSocket(serverAddress);
-        [SerializeField]
-        private GUILogger logger;
 
         private void Start()
         {

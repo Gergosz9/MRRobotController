@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2e2731103cdda44af77955a0b4814c, type: 3}
   m_Name: AppRemotingPlugin Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Holographic Remoting remote app
   version: 1.11.2
   featureIdInternal: com.microsoft.openxr.feature.appremoting
@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feeef8d85de8db242bdda70cc7ff5acd, type: 3}
   m_Name: OculusTouchControllerProfile Metro
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Oculus Touch Controller Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.oculustouch
@@ -1261,11 +1261,6 @@ MonoBehaviour:
   - {fileID: 559627786289991748}
   - {fileID: 3514762502358286281}
   - {fileID: 2700408812308480614}
-  - {fileID: -706338546622438980}
-  - {fileID: -5406883412869792032}
-  - {fileID: 7348499864303728115}
-  - {fileID: -3425418105171052765}
-  - {fileID: -3055534922074980418}
   - {fileID: 8477975974732598692}
   - {fileID: 3197297709649474301}
   - {fileID: -6326232607128738207}
@@ -1422,10 +1417,6 @@ MonoBehaviour:
   - {fileID: -5297537421338403838}
   - {fileID: -6814627492455321722}
   - {fileID: 6102079508090334006}
-  - {fileID: -1484218591164494417}
-  - {fileID: -1672490730344615671}
-  - {fileID: 3125719083653346861}
-  - {fileID: 4010900213519536629}
   - {fileID: 4835167900761102818}
   - {fileID: -7321926629275167846}
   - {fileID: 2140832713855989735}

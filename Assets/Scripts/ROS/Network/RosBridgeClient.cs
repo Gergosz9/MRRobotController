@@ -3,14 +3,11 @@
     using Assets.Scripts.ROS.Data.Message;
     using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
     using UnityEngine;
 
     internal class ROSBridgeClient : MonoBehaviour
     {
-        [SerializeField]
-        private GUILogger logger;
         [SerializeField]
         private WebSocketClient webSocketClient;
         [SerializeField]
@@ -19,7 +16,6 @@
         public void Start()
         {
             webSocketClient.AddOpenListener(() => SubscribeToTopics());
-            StartCommunication();
         }
 
         public void StartCommunication()

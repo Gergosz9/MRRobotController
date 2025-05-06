@@ -9,8 +9,6 @@ using Time = Assets.Scripts.ROS.Data.Message.Primitives.Time;
 public class PositionManager : MonoBehaviour
 {
     [SerializeField]
-    private static GUILogger logger;
-    [SerializeField]
     static Pose relativeCenter = new Pose(Vector3.zero, Quaternion.identity);
     [SerializeField]
     private static WebSocketClient webSocketClient;
@@ -58,7 +56,7 @@ public class PositionManager : MonoBehaviour
 
 
         webSocketClient.SendMessage(message);
-        logger.Log("Sending goal: " + translatedGoal.ToString());
+        Debug.Log("Sending goal: " + translatedGoal.ToString());
 
     }
 

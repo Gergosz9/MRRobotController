@@ -14,32 +14,6 @@
       "dependencies": {},
       "hash": "d30cb64a988ac3ecfd31bd9dc96e38422a729e47"
     },
-    "com.meta.xr.mrutilitykit": {
-      "version": "72.0.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.meta.xr.sdk.core": "72.0.0",
-        "com.unity.textmeshpro": "3.0.6",
-        "com.unity.ai.navigation": "1.1.4",
-        "com.unity.nuget.newtonsoft-json": "3.0.2"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.meta.xr.sdk.audio": {
-      "version": "72.0.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.meta.xr.sdk.core": {
-      "version": "72.0.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.microsoft.mixedreality.openxr": {
       "version": "1.11.2",
       "depth": 0,
@@ -86,15 +60,6 @@
       "source": "registry",
       "dependencies": {
         "com.unity.modules.ai": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.asset-store-validation": {
-      "version": "0.5.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.2"
       },
       "url": "https://packages.unity.com"
     },
@@ -161,15 +126,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.ide.rider": {
-      "version": "3.0.34",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ext.nunit": "1.0.6"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.ide.visualstudio": {
       "version": "2.0.22",
       "depth": 0,
@@ -198,13 +154,6 @@
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.mobile.android-logcat": {
-      "version": "1.4.4",
-      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -263,19 +212,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.xr.arcore": {
-      "version": "5.1.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.xr.core-utils": "2.1.0",
-        "com.unity.xr.management": "4.0.1",
-        "com.unity.xr.arfoundation": "5.1.6",
-        "com.unity.modules.androidjni": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.xr.arfoundation": {
       "version": "5.1.6",
