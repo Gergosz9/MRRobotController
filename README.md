@@ -112,7 +112,7 @@
     /// Defines the topic names used in ROS messages.
  
 ## TODOs
- - [ ] Implement GUI logger
+ - [x] Implement GUI logger
 	 - [ ] Update Documentation
  - [ ] Implement and optimize Lidar display
 	 - [x] Convert Lidar scans to world points
