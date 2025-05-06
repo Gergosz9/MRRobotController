@@ -1,12 +1,14 @@
 # Hololens Robot Controller
 
-*Placeholder text*
+*Placeholder text for general description*
 
-## Documentation
+# Documentation
 
-### Scripts
+*Placeholder text for general description*
 
-#### File Structure
+## Scripts
+
+### File Structure
 
 	Scripts/
 	├── PinchPointDetector.cs
@@ -33,7 +35,7 @@
 	│               ├── Time.cs
 	│               └── Topic.cs
 
-#### Descriptons ####
+### Descriptons
 
 **PinchPointDetector.cs**
 
@@ -46,7 +48,8 @@
 
 **PositionManager.cs**
 
-	/// PositionManager is responsible for managing the position of the robot in Unity and translating between Unity and ROS coordinate systems.
+	/// PositionManager is responsible for managing the position of the robot 
+ 	/// in Unity and translating between Unity and ROS coordinate systems.
 	/// Contains methods to convert between Unity and ROS poses and vectors.
 
 **QRCodeManager.cs**
@@ -109,8 +112,16 @@
     /// Defines the topic names used in ROS messages.
  
 ## TODOs
- - [ ] [TBD] Implement GUI logger
- - [ ] [In progress] Implement and optimize Lidar display
- - [ ] [TBD] Implement Costmap display
- - [ ] [In progress] Implement gesture controlled robot movement
+ - [ ] Implement GUI logger
+	 - [ ] Update Documentation
+ - [ ] Implement and optimize Lidar display
+	 - [x] Convert Lidar scans to world points
+	 - [ ] Implment a display
+	 - [ ] Update Documentation
+ - [ ] Implement Costmap display
+	 - [ ] Convert Costmap JSONs to usable data
+	 - [ ] Implment a display
+	 - [ ] Update Documentation
+ - [ ] Iplement gesture controlled robot movement
+	 - [ ] Update Documentation
 
