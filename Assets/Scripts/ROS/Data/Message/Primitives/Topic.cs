@@ -1,6 +1,10 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
     using System.Collections.Generic;
+
+    /// <summary>
+    /// Defines the topic names used in ROS messages.
+    /// </summary>
     internal static class Topic
     {
         public const string scan = "/scan";

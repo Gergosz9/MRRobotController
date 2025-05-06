@@ -5,6 +5,10 @@
     using System.Text;
     using UnityEngine;
 
+    /// <summary>
+    /// WebSocketClient is a Unity MonoBehaviour that manages the connection to the Robot.
+    /// Uses the NativeWebSocket library to handle WebSocket communication.
+    /// </summary>
     public class WebSocketClient : MonoBehaviour
     {
         [SerializeField]

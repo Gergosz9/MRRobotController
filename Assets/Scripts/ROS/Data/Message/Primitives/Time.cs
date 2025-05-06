@@ -4,6 +4,8 @@
 
     /// <summary>
     /// Naming convention: https://docs.ros.org/en/noetic/api/std_msgs/html/msg/Time.html
+    ///
+    /// Defines the Time message type used in ROS messages.
     /// </summary>
     internal class Time
     {

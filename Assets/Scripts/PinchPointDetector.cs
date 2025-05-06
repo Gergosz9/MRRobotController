@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+
+/// <summary>
+/// PinchPointDetector is responsible for detecting pinch gestures using the MRTK HandsAggregatorSubsystem.
+/// It uses the MRTKRayInteractor to determine the pinch point and updates a preview pointer.
+/// </summary>
 public class PinchPointDetector : MonoBehaviour
 {
     private HandsAggregatorSubsystem aggregator;

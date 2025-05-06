@@ -6,6 +6,11 @@ using System;
 using UnityEngine;
 using Time = Assets.Scripts.ROS.Data.Message.Primitives.Time;
 
+
+/// <summary>
+/// PositionManager is responsible for managing the position of the robot in Unity and translating between Unity and ROS coordinate systems.
+/// Contains methods to convert between Unity and ROS poses and vectors.
+/// </summary>
 public class PositionManager : MonoBehaviour
 {
     [SerializeField]

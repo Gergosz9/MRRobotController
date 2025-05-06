@@ -8,6 +8,10 @@
     using System.Threading.Tasks;
     using UnityEngine;
 
+
+    /// <summary>
+    /// LidarDisplay is a Unity MonoBehaviour that displays Lidar points in the scene recieved from the ROS.
+    /// </summary>
     internal class LidarDisplay : MonoBehaviour
     {
         [SerializeField]

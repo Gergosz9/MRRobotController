@@ -1,10 +1,14 @@
 using Assets.Scripts.ROS.Network;
 using UnityEngine;
 
+
+/// <summary>
+/// ConnectionStatusUpdater is a Unity MonoBehaviour that updates the connection status text based on the WebSocket connection state.
+/// </summary>
 public class ConnectionStatusUpdater : MonoBehaviour
 {
-    public WebSocketClient webSocketClient; // Ensure WebSocketClient is public or internal
-    // Start is called before the first frame update
+    [SerializeField]
+    private WebSocketClient webSocketClient;
     void Start()
     {
         webSocketClient.AddOpenListener(() => OnOpen());

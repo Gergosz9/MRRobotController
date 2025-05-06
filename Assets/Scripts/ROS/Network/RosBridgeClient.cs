@@ -6,6 +6,9 @@
     using System.Collections.Generic;
     using UnityEngine;
 
+    /// <summary>
+    /// Handles the messages recieved from the websocket.
+    /// </summary>
     internal class ROSBridgeClient : MonoBehaviour
     {
         [SerializeField]

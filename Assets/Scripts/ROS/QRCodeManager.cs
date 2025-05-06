@@ -1,6 +1,10 @@
 using Microsoft.MixedReality.OpenXR;
 using UnityEngine;
 
+
+/// <summary>
+/// QRCodeManager is a Unity MonoBehaviour that manages the detection and tracking of QR codes of the robot.
+/// </summary>
 public class QRCodeManager : MonoBehaviour
 {
     [SerializeField]

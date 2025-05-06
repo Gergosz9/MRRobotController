@@ -1,6 +1,12 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
+
+    /// <summary>
+    /// Naming convention: https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/LaserScan.html
+    ///
+    /// ScanMsg is a message type used in ROS to represent LIDAR scan data.
+    /// </summary>
     internal class ScanMsg : Msg
     {
         public float angle_min { get; set; }

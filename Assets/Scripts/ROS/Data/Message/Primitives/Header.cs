@@ -2,8 +2,11 @@
 {
     using UnityEngine;
 
+
     /// <summary>
     /// Naming convention: https://docs.ros.org/en/noetic/api/std_msgs/html/msg/Header.html
+    ///
+    /// Header is a common message header used in ROS messages.
     /// </summary>
     internal class Header
     {

@@ -4,6 +4,10 @@
     using UnityEngine;
     using Time = Primitives.Time;
 
+    /// <summary>
+    /// CostMapMsg is a message type that contains information about a cost map,
+    /// including its resolution, dimensions, and origin.
+    /// </summary>
     internal class CostMapMsg : Msg
     {
         public class Info
