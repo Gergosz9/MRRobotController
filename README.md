@@ -116,7 +116,8 @@
 	 - [ ] Update Documentation
  - [ ] Implement and optimize Lidar display
 	 - [x] Convert Lidar scans to world points
-	 - [ ] Implment a display
+	 - [x] Implment a display
+  	 - [ ] Optimize for large number of scans (Maybe rework the display?)
 	 - [ ] Update Documentation
  - [ ] Implement Costmap display
 	 - [ ] Convert Costmap JSONs to usable data
