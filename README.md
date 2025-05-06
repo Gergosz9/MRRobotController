@@ -1,110 +1,114 @@
-# Hololens Robot Controller #
+# Hololens Robot Controller
 
 *Placeholder text*
 
-## Documentation ##
+## Documentation
 
-### Scripts ###
+### Scripts
 
-#### File Structure ####
+#### File Structure
 
->  - **Scripts**
-> 	 -	PinchPointDetector.cs
-> 	 -	**Display**
-> 		 -	LidarDisplay.cs
-> 	 - **ROS**
-> 		 - PositionManager.cs
-> 		 - QRCodeManager.cs
-> 		 - **Network**
-> 			 - ConnectionStatusUpdater.cs
-> 			 - RosBridgeClient.cs
-> 			 - WebSocketClient.cs
-> 		 - **Data**
-> 			 - RosMessage.cs
-> 			 - **Message**
-> 				 - CostMapMsg.cs
-> 				 - GoalPoseMsg.cs
-> 				 - Msg.cs
-> 				 - PlanMsg.cs
-> 				 - ScanMsg.cs 
-> 				 - **Primitives**
-> 					 - Header.cs
-> 					 - Operation.cs
-> 					 - Time.cs
-> 					 - Topic.cs
+	Scripts/
+	├── PinchPointDetector.cs
+	├── Display/
+	│   └── LidarDisplay.cs
+	├── ROS/
+	│   ├── PositionManager.cs
+	│   ├── QRCodeManager.cs
+	│   ├── Network/
+	│   │   ├── ConnectionStatusUpdater.cs
+	│   │   ├── RosBridgeClient.cs
+	│   │   └── WebSocketClient.cs
+	│   └── Data/
+	│       ├── RosMessage.cs
+	│       └── Message/
+	│           ├── CostMapMsg.cs
+	│           ├── GoalPoseMsg.cs
+	│           ├── Msg.cs
+	│           ├── PlanMsg.cs
+	│           ├── ScanMsg.cs
+	│           └── Primitives/
+	│               ├── Header.cs
+	│               ├── Operation.cs
+	│               ├── Time.cs
+	│               └── Topic.cs
 
 #### Descriptons ####
 
 **PinchPointDetector.cs**
 
-> Blockquote
+	/// PinchPointDetector is responsible for detecting pinch gestures using the MRTK HandsAggregatorSubsystem.
+	/// It uses the MRTKRayInteractor to determine the pinch point and updates a preview pointer.
 
 **LidarDisplay.cs**
 
-> Blockquote
+    /// LidarDisplay is a Unity MonoBehaviour that displays Lidar points in the scene recieved from the ROS.
 
 **PositionManager.cs**
 
-> Blockquote
+	/// PositionManager is responsible for managing the position of the robot in Unity and translating between Unity and ROS coordinate systems.
+	/// Contains methods to convert between Unity and ROS poses and vectors.
 
 **QRCodeManager.cs**
 
-> Blockquote
+	/// QRCodeManager is a Unity MonoBehaviour that manages the detection and tracking of QR codes of the robot.
 
 **ConnectionStatusUpdater.cs**
 
-> Blockquote
+	/// ConnectionStatusUpdater is a Unity MonoBehaviour that updates the connection status text based on the WebSocket connection state.
 
 **RosBridgeClient.cs**
 
-> Blockquote
+    /// Handles the messages recieved from the websocket.
 
 **WebSocketClient.cs**
 
-> Blockquote
+    /// WebSocketClient is a Unity MonoBehaviour that manages the connection to the Robot.
+    /// Uses the NativeWebSocket library to handle WebSocket communication
 
 **RosMessage.cs**
 
-> Blockquote
+    /// RosMessage is a generic class that represents a message in ROS format.
 
 **CostMapMsg.cs**
 
-> Blockquote
+    /// CostMapMsg is a message type that contains information about a cost map,
+    /// including its resolution, dimensions, and origin.
 
 **GoalPoseMsg.cs**
 
-> Blockquote
+    /// GoalPoseMsg is a message type that contains a pose (position and orientation) in 3D space.
 
 **Msg.cs**
 
-> Blockquote
+    /// Abstract class that serves as a base for all ROS message types.
 
 **PlanMsg.cs**
 
-> Blockquote
+    /// An array of poses that represents a Path for a robot to follow
 
 **ScanMsg.cs** 
 
-> Blockquote
+    /// ScanMsg is a message type used in ROS to represent LIDAR scan data.
 
 **Header.cs**
-
-> Blockquote
+   
+    /// Header is a common message header used in ROS messages.
 
 **Operation.cs**
 
-> Blockquote
+
+    /// Defines the operation types for ROS messages.
 
 **Time.cs**
 
-> Blockquote
+	/// Defines the Time message type used in ROS messages.
 
 **Topic.cs**
 
-> Blockquote
-
-## TODOs ##
-
+    /// Defines the topic names used in ROS messages.
+ 
+## TODOs
  - [ ] [TBD] Implement GUI logger
  - [ ] [In progress] Implement and optimize Lidar display
  - [ ] [TBD] Implement Costmap display
