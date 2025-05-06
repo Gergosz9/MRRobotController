@@ -34,7 +34,6 @@ public class PositionManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         currentPose = new Pose();
@@ -65,33 +64,50 @@ public class PositionManager : MonoBehaviour
 
     }
 
-    public static Pose TranslateToROSPose(Pose pose)
-    {
-        // ROS uses a right-handed coordinate system, Unity uses a left-handed coordinate system.
-        Pose shiftedPose = new Pose(pose.position - relativeCenter.position, Quaternion.Inverse(relativeCenter.rotation) * pose.rotation);
-        Vector3 rosPosition = new Vector3(shiftedPose.position.z, -shiftedPose.position.x, shiftedPose.position.y);
-        Quaternion rosrotation = new Quaternion(shiftedPose.rotation.z, -shiftedPose.rotation.x, shiftedPose.rotation.y, -shiftedPose.rotation.w);
-        return new Pose(rosPosition, rosrotation);
-    }
-
     public static Pose TranslateToUnityPose(Pose pose)
     {
-        // ROS uses a right-handed coordinate system, Unity uses a left-handed coordinate system.
-        Vector3 unityPosition = new Vector3(-pose.position.y, pose.position.z, pose.position.x);
-        Quaternion unityrotation = new Quaternion(-pose.rotation.y, pose.rotation.z, pose.rotation.x, -pose.rotation.w);
-        return new Pose(unityPosition + relativeCenter.position, unityrotation * relativeCenter.rotation);
+        Pose unityPose = new Pose(TranslateToUnityVector(pose.position), TranslateToUnityQuarternion(pose.rotation));
+        return unityPose;
+    }
+
+    public static Pose TranslateToROSPose(Pose pose)
+    {
+        Pose rosPose = new Pose(TranslateToROSVector(pose.position), TranslateToROSQuaternion(pose.rotation));
+        return rosPose;
     }
 
     public static Vector3 TranslateToUnityVector(Vector3 vector)
     {
-        // ROS uses a right-handed coordinate system, Unity uses a left-handed coordinate system.
-        return new Vector3(-vector.y, vector.z, vector.x) + relativeCenter.position;
+        Vector3 unityVector = new Vector3(vector.y, vector.z, -vector.x);
+        return unityVector;
     }
 
     public static Vector3 TranslateToROSVector(Vector3 vector)
     {
-        // ROS uses a right-handed coordinate system, Unity uses a left-handed coordinate system.
-        Vector3 translated = vector - relativeCenter.position;
-        return new Vector3(translated.z, -translated.x, translated.y);
+        Vector3 rosVector = new Vector3(-vector.z, vector.x, vector.y);
+        return rosVector;
+    }
+
+    public static Quaternion TranslateToUnityQuarternion(Quaternion quaternion)
+    {
+        Quaternion unityQuaternion = new Quaternion(quaternion.y, quaternion.z, -quaternion.x, quaternion.w);
+        return unityQuaternion;
+    }
+
+    public static Quaternion TranslateToROSQuaternion(Quaternion quaternion)
+    {
+        Quaternion rosQuaternion = new Quaternion(-quaternion.z, quaternion.x, quaternion.y, quaternion.w);
+        return rosQuaternion;
+    }
+
+    public static Vector3 TranslateLidarToUnityVector(float range, float angle)
+    {
+        Vector3 rospoint = new Vector3(
+            range * Mathf.Cos(angle),
+            range * Mathf.Sin(angle),
+            0f
+        );
+
+        return TranslateToUnityVector(rospoint);
     }
 }

@@ -38,6 +38,7 @@ public class PinchPointDetector : MonoBehaviour
         }
     }
 
+    bool isActivelyPinching = false;
     public void DetectPinch()
     {
         bool handIsValidLeft = aggregator.TryGetPinchProgress(XRNode.LeftHand, out bool isReadyToPinchLeft, out bool isPinchingLeft, out float pinchAmountLeft);
@@ -45,20 +46,25 @@ public class PinchPointDetector : MonoBehaviour
 
         if ((handIsValidLeft && isPinchingLeft))
         {
-            Debug.Log("Pinch detected!");
             DetectPoint(rayInteractorLeft);
-            //PositionManager.SendRobotTo(new Pose(rayInteractorLeft.rayEndPoint,Quaternion.identity));
+            isActivelyPinching = true;
         }
 
         if ((handIsValidRight && isPinchingRight))
         {
-            Debug.Log("Pinch detected!");
             DetectPoint(rayInteractorRight);
+            isActivelyPinching = true;
         }
 
         if(!isPinchingLeft && !isPinchingRight)
         {
             previewPointer.SetActive(false);
+            if (isActivelyPinching)
+            {
+                //PositionManager.SendRobotTo(new Pose(rayInteractorLeft.rayEndPoint, Quaternion.identity));
+                Debug.Log("[PinchPointDetector] Pinch detected.");
+            }
+            isActivelyPinching = false;
         }
     }
 

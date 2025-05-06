@@ -26,7 +26,6 @@
 
         private void Start()
         {
-            // Initialize the Lidar display
             if (lidarPointPrefab == null)
             {
                 Debug.LogError("[LidarDisplay] Lidar point prefab is not assigned.");
@@ -68,17 +67,9 @@
             }
         }
 
-        public void UpdatePointsTest(Vector3[] points)
-        {
-            foreach(Vector3 p in points)
-            {
-                //Debug.DrawRay(p, Vector3.up);
-            }
-        }
-
         public void displayScan(RosMessage<ScanMsg> message)
         {
-            Vector3[] points = new Vector3[message.msg.ranges.Length];
+            List<Vector3> validPoints = new List<Vector3>();
 
             for (int i = 0; i < message.msg.ranges.Length; i++)
             {
@@ -86,35 +77,24 @@
                 {
                     continue;
                 }
+
                 float range = message.msg.ranges[i].Value;
                 float angle = message.msg.angle_min + message.msg.angle_increment * i;
-                Vector3 rospoint = new Vector3(
-                    range * Mathf.Cos(angle),
-                    0,
-                    range * Mathf.Sin(angle)
-                );
+                Vector3 point = PositionManager.TranslateLidarToUnityVector(range, angle);
 
-                Vector3 unitypoint = rospoint;
-
-                bool istooclose = false;
-
-                for(int j=0;j<points.Length;j++)
-                {
-                    if (Vector3.Distance(points[j], unitypoint) < density)
-                    {
-                        istooclose = true;
-                        break;
-                    }
-                }
+                bool istooclose = validPoints.Any(existingPoint =>
+                    Vector3.Distance(existingPoint, point) < density ||
+                    Vector3.Distance(point, Vector3.zero) < density);
 
                 if (istooclose)
                 {
                     continue;
                 }
-                points[i] = unitypoint;
+
+                validPoints.Add(point);
             }
 
-            this.points = points;
+            this.points = validPoints.ToArray();
         }
     }
 }

@@ -11,8 +11,8 @@
     /// </summary>
     public class WebSocketClient : MonoBehaviour
     {
-        [SerializeField]
-        private static string serverAddress = "ws://192.168.100.81:9090";
+        // default server address: "ws://192.168.100.81:9090"
+        private static string serverAddress = "ws://localhost:8765";
         private static WebSocket webSocket = new WebSocket(serverAddress);
 
         private void Start()
