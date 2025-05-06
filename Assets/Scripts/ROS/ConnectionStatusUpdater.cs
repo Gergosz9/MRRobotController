@@ -11,12 +11,6 @@ public class ConnectionStatusUpdater : MonoBehaviour
         webSocketClient.AddCloseListener((e) => OnClose());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnOpen()
     {
         gameObject.GetComponentInParent<TMPro.TextMeshProUGUI>().text = "Connected";
