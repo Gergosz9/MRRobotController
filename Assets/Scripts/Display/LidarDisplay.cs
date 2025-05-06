@@ -15,9 +15,10 @@
 
         // Minimum distance between lidar points to be displayed in meters
         [SerializeField] 
-        private float density = 0.05f;
+        private float density = 5f;
 
         private List<GameObject> lidarPoints;
+        private Vector3[] points = new Vector3[0];
 
         private void Start()
         {
@@ -38,6 +39,11 @@
             }
         }
 
+        private void FixedUpdate()
+        {
+            UpdatePoints(this.points);
+        }
+
         public void UpdatePoints(Vector3[] points)
         {
             Vector3 lastPlacedPoint = Vector3.zero;
@@ -46,21 +52,6 @@
 
             for (int i = 0; i < points.Length; i++)
             {
-                bool isTooClose = false;
-                for (int j = 0; j < lidarIndex; j++)
-                {
-                    if (Vector3.Distance(lidarPoints[j].transform.position, points[i]) < density)
-                    {
-                        isTooClose = true;
-                        break;
-                    }
-                }
-
-                if (isTooClose)
-                {
-                    continue;
-                }
-
                 lidarPoints[lidarIndex].transform.position = points[i];
                 lidarPoints[lidarIndex].SetActive(true);
                 lastPlacedPoint = points[i];
@@ -73,6 +64,13 @@
             }
         }
 
+        public void UpdatePointsTest(Vector3[] points)
+        {
+            foreach(Vector3 p in points)
+            {
+                //Debug.DrawRay(p, Vector3.up);
+            }
+        }
 
         public void displayScan(RosMessage<ScanMsg> message)
         {
@@ -80,7 +78,11 @@
 
             for (int i = 0; i < message.msg.ranges.Length; i++)
             {
-                float range = message.msg.ranges[i];
+                if (!message.msg.ranges[i].HasValue)
+                {
+                    continue;
+                }
+                float range = message.msg.ranges[i].Value;
                 float angle = message.msg.angle_min + message.msg.angle_increment * i;
                 Vector3 rospoint = new Vector3(
                     range * Mathf.Cos(angle),
@@ -88,11 +90,27 @@
                     range * Mathf.Sin(angle)
                 );
 
-                Vector3 unitypoint = PositionManager.TranslateToUnityVector(rospoint);
+                Vector3 unitypoint = rospoint;
+
+                bool istooclose = false;
+
+                for(int j=0;j<points.Length;j++)
+                {
+                    if (Vector3.Distance(points[j], unitypoint) < density)
+                    {
+                        istooclose = true;
+                        break;
+                    }
+                }
+
+                if (istooclose)
+                {
+                    continue;
+                }
                 points[i] = unitypoint;
             }
 
-            UpdatePoints(points);
+            this.points = points;
         }
     }
 }

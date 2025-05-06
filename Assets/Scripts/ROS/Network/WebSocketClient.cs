@@ -8,22 +8,27 @@
     public class WebSocketClient : MonoBehaviour
     {
         [SerializeField]
-        private static string serverAddress = "ws://localhost:8765";
+        private static string serverAddress = "ws://192.168.100.81:9090";
         private static WebSocket webSocket = new WebSocket(serverAddress);
         [SerializeField]
         private GUILogger logger;
 
         private void Start()
         {
-            AddOpenListener(() => logger.Log("[WebSocket] Connected"));
-            AddMessageListener((message) => logger.Log("[WebSocket] Message: " + message));
-            AddErrorListener((e) => logger.Log("[WebSocket] Error: " + e));
-            AddCloseListener((e) => logger.Log("[WebSocket] Closed: " + e));
+            AddOpenListener(() => Debug.Log("[WebSocket] Connected"));
+            AddMessageListener((message) => Debug.Log("[WebSocket] Message: " + message));
+            AddErrorListener((e) => Debug.Log("[WebSocket] Error: " + e));
+            AddCloseListener((e) => Debug.Log("[WebSocket] Closed: " + e));
+        }
+
+        private void Update()
+        {
+            webSocket.DispatchMessageQueue();
         }
 
         public void Connect()
         {
-            logger.Log("[WebSocket] Connecting...");
+            Debug.Log("[WebSocket] Connecting...");
 
             webSocket.Connect();
         }
@@ -43,7 +48,7 @@
         {
             string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\" }}";
             SendMessage(message);
-            logger.Log("Message sent: " + message);
+            Debug.Log("Message sent: " + message);
         }
 
         public void AddMessageListener(System.Action<string> listener)

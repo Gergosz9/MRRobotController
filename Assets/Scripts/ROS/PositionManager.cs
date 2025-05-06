@@ -1,14 +1,19 @@
+using Assets.Scripts.ROS.Data.Message;
+using Assets.Scripts.ROS.Data.Message.Primitives;
 using Assets.Scripts.ROS.Network;
+using Newtonsoft.Json;
+using System;
 using UnityEngine;
-
+using Time = Assets.Scripts.ROS.Data.Message.Primitives.Time;
 
 public class PositionManager : MonoBehaviour
 {
     [SerializeField]
-    private GUILogger logger;
-
+    private static GUILogger logger;
     [SerializeField]
     static Pose relativeCenter = new Pose(Vector3.zero, Quaternion.identity);
+    [SerializeField]
+    private static WebSocketClient webSocketClient;
 
     public Pose RelativeCenter
     {
@@ -32,12 +37,28 @@ public class PositionManager : MonoBehaviour
         currentPose = new Pose();
     }
 
-    /*
-     * Send a control message to the robot to reach a given position.
-     * goal is the position in the world coordinates.
-     */
-    public void SendRobotTo(Pose goal)
+    public static void SendRobotTo(Pose goal)
     {
+        Pose translatedGoal = TranslateToROSPose(goal);
+
+        GoalPoseMsg msg = msg = new GoalPoseMsg
+        {
+            header = new Header
+            {
+                stamp = new Time
+                {
+                    sec = (uint)DateTime.Now.Second,
+                    nanosec = (uint)DateTime.Now.Millisecond * 1000
+                },
+                frame_id = "base_link"
+            },
+            pose = translatedGoal
+        };
+        string message = JsonConvert.SerializeObject(new RosMessage<GoalPoseMsg>("publish", "/goal_pose", msg));
+
+
+        webSocketClient.SendMessage(message);
+        logger.Log("Sending goal: " + translatedGoal.ToString());
 
     }
 

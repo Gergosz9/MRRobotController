@@ -51,7 +51,7 @@
         public void HandleMessage(string jsonMessage)
         {
             string topic = GetMessageTopic(jsonMessage);
-            logger.Log(jsonMessage);
+            Debug.Log(jsonMessage);
 
             switch (topic)
             {

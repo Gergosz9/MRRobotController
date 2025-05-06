@@ -10,8 +10,8 @@
         public float scan_time { get; set; }
         public float range_min { get; set; }
         public float range_max { get; set; }
-        public float[] ranges { get; set; }
-        public float[] intensities { get; set; }
+        public float?[] ranges { get; set; }
+        public float?[] intensities { get; set; }
         public ScanMsg()
         {
             angle_min = 0.0f;
@@ -21,10 +21,10 @@
             scan_time = 0.0f;
             range_min = 0.0f;
             range_max = 0.0f;
-            ranges = new float[0];
-            intensities = new float[0];
+            ranges = new float?[0];
+            intensities = new float?[0];
         }
-        public ScanMsg(Header header, float angle_min, float angle_max, float angle_increment, float time_increment, float scan_time, float range_min, float range_max, float[] ranges, float[] intensities)
+        public ScanMsg(Header header, float angle_min, float angle_max, float angle_increment, float time_increment, float scan_time, float range_min, float range_max, float?[] ranges, float?[] intensities)
         {
             this.header = header;
             this.angle_min = angle_min;

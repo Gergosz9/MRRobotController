@@ -42,6 +42,7 @@ public class PinchPointDetector : MonoBehaviour
         {
             Debug.Log("Pinch detected!");
             DetectPoint(rayInteractorLeft);
+            //PositionManager.SendRobotTo(new Pose(rayInteractorLeft.rayEndPoint,Quaternion.identity));
         }
 
         if ((handIsValidRight && isPinchingRight))
