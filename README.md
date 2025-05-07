@@ -114,7 +114,7 @@
 ## TODOs
  - [x] Implement GUI logger
 	 - [ ] Update Documentation
- - [ ] Implement and optimize Lidar display
+ - [x] Implement and optimize Lidar display
 	 - [x] Convert Lidar scans to world points
 	 - [x] Implment a display
   	 - [ ] Optimize for large number of scans (Maybe rework the display?)
@@ -123,8 +123,8 @@
 	 - [ ] Convert Costmap JSONs to usable data
 	 - [ ] Implment a display
 	 - [ ] Update Documentation
- - [ ] Iplement gesture controlled robot movement
+ - [x] Iplement gesture controlled robot movement
  	 - [x] Started implementation (RobotGestureControlV2 branch)
- 	 - [ ] FIX - Pose doesn't work with ROS message, causes recursion error, might have to construct the message manually
+ 	 - [x] FIX - Pose doesn't work with ROS message, causes recursion error, might have to construct the message manually
 	 - [ ] Update Documentation
 
