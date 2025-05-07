@@ -123,5 +123,7 @@
 	 - [ ] Implment a display
 	 - [ ] Update Documentation
  - [ ] Iplement gesture controlled robot movement
+ 	 - [x] Started implementation (RobotGestureControlV2 branch)
+ 	 - [ ] FIX - Pose doesn't work with ROS message, causes recursion error, might have to construct the message manually
 	 - [ ] Update Documentation
 
