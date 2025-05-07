@@ -34,46 +34,65 @@ public class PinchPointDetector : MonoBehaviour
     {
         if (aggregator != null)
         {
-            DetectPinch();
+            if (DetectPinch())
+            {
+                CalculatePreviewPointerTransform(DetectPinchLocation());
+            }
+            else
+            {
+                previewPointer.SetActive(false);
+            }
         }
     }
 
-    bool isActivelyPinching = false;
-    public void DetectPinch()
+    public MRTKRayInteractor DetectPinchLocation()
     {
         bool handIsValidLeft = aggregator.TryGetPinchProgress(XRNode.LeftHand, out bool isReadyToPinchLeft, out bool isPinchingLeft, out float pinchAmountLeft);
         bool handIsValidRight = aggregator.TryGetPinchProgress(XRNode.RightHand, out bool isReadyToPinchRight, out bool isPinchingRight, out float pinchAmountRight);
 
         if ((handIsValidLeft && isPinchingLeft))
-        {
-            DetectPoint(rayInteractorLeft);
-            isActivelyPinching = true;
-        }
+            return rayInteractorLeft;
 
         if ((handIsValidRight && isPinchingRight))
-        {
-            DetectPoint(rayInteractorRight);
-            isActivelyPinching = true;
-        }
+            return rayInteractorRight;
 
-        if(!isPinchingLeft && !isPinchingRight)
-        {
-            previewPointer.SetActive(false);
-            if (isActivelyPinching)
-            {
-                //PositionManager.SendRobotTo(new Pose(rayInteractorLeft.rayEndPoint, Quaternion.identity));
-                Debug.Log("[PinchPointDetector] Pinch detected.");
-            }
-            isActivelyPinching = false;
-        }
+        return null;
     }
 
-    public void DetectPoint(MRTKRayInteractor rayInteractor)
+    public bool DetectPinch()
+    {
+        bool handIsValidLeft = aggregator.TryGetPinchProgress(XRNode.LeftHand, out bool isReadyToPinchLeft, out bool isPinchingLeft, out float pinchAmountLeft);
+        bool handIsValidRight = aggregator.TryGetPinchProgress(XRNode.RightHand, out bool isReadyToPinchRight, out bool isPinchingRight, out float pinchAmountRight);
+        if ((handIsValidLeft && isPinchingLeft) || (handIsValidRight && isPinchingRight))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool isPinchHeld = false;
+    public bool DetectPinchRelease()
+    {
+        if(DetectPinch())
+        {
+            isPinchHeld = true;
+        }
+        else if (isPinchHeld)
+        {
+            isPinchHeld = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void CalculatePreviewPointerTransform(MRTKRayInteractor rayInteractor)
     {
         Vector3 v = rayInteractor.rayEndPoint;
         previewPointer.transform.position = v;
+        Vector3 q = rayInteractor.rayEndPoint - rayInteractor.rayOriginTransform.position;
+        q.y = 0;
+        previewPointer.transform.rotation = Quaternion.LookRotation(q);
         previewPointer.SetActive(true);
-
-        // TODO: Add logic to handle the detected point
     }
 }

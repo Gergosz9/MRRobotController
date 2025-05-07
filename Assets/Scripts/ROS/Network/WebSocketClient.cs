@@ -44,13 +44,13 @@
         {
             var encoded = Encoding.UTF8.GetBytes(message);
             webSocket.Send(encoded);
+            Debug.Log("Message sent: " + message);
         }
 
         public void Subscribe(string topic)
         {
             string message = $"{{\"op\": \"subscribe\", \"topic\": \"{topic}\" }}";
             SendMessage(message);
-            Debug.Log("Message sent: " + message);
         }
 
         public void AddMessageListener(System.Action<string> listener)
