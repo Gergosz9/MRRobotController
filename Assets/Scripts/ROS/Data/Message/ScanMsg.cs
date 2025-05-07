@@ -9,6 +9,7 @@
     /// ScanMsg is a message type used in ROS to represent LIDAR scan data.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(ScanMsgJsonConverter))]
     internal class ScanMsg : Msg
     {
         [JsonProperty]

@@ -11,8 +11,10 @@
     /// </summary>
 
     [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(CostMapMsgJsonConverter))]
     internal class CostMapMsg : Msg
     {
+        [JsonObject(MemberSerialization.OptIn)]
         public class Info
         {
             [JsonProperty]
@@ -44,17 +46,18 @@
                 this.origin = origin;
             }
         }
-
-        public Info info { get; private set; }
-        public uint[] data { get; private set; }
+        [JsonProperty]
+        public Info info { get; set; }
+        [JsonProperty]
+        public int[] data { get; set; }
 
         public CostMapMsg()
         {
             this.info = new Info();
-            this.data = new uint[0];
+            this.data = new int[0];
         }
 
-        public CostMapMsg(Header header, Info info, uint[] data)
+        public CostMapMsg(Header header, Info info, int[] data)
         {
             this.header = header;
             this.info = info;

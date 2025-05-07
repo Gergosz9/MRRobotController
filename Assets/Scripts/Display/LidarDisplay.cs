@@ -1,33 +1,35 @@
 ﻿namespace Assets.Scripts
 {
     using Assets.Scripts.ROS.Data.Message;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using UnityEngine;
 
-
     /// <summary>
-    /// LidarDisplay is a Unity MonoBehaviour that displays Lidar points in the scene recieved from the ROS.
+    /// Displays Lidar points using GPU instancing for high-performance rendering.
     /// </summary>
     internal class LidarDisplay : MonoBehaviour
     {
         [SerializeField]
-        private GameObject lidarPointPrefab;
+        private Mesh lidarPointMesh; // e.g., low-poly sphere or quad
 
-        // Minimum distance between lidar points to be displayed in meters
-        [SerializeField] 
+        [SerializeField]
+        private Material lidarPointMaterial; // Must support GPU instancing
+
+        [SerializeField]
         private float density = 5f;
 
-        private List<GameObject> lidarPoints = new List<GameObject>();
+        [SerializeField]
+        private float pointScale = 0.05f;
+
+        private List<Matrix4x4> matrices = new List<Matrix4x4>();
         private Vector3[] points = new Vector3[0];
         private bool initialized = false;
-        private bool enabled = false;
+        private new bool enabled = false;
+
         public void Enable()
         {
-            if(!initialized)
+            if (!initialized)
             {
                 Initialize();
             }
@@ -41,82 +43,62 @@
 
         public void Initialize()
         {
-            if (lidarPointPrefab == null)
+            if (lidarPointMesh == null || lidarPointMaterial == null)
             {
-                Debug.LogError("[LidarDisplay] Lidar point prefab is not assigned.");
+                Debug.LogError("[LidarDisplay] Mesh or Material is not assigned.");
                 return;
-            }
-
-            for(int i= 0; i < 1000; i++)
-            {
-                GameObject point = Instantiate(lidarPointPrefab, transform);
-                point.SetActive(false);
-                lidarPoints.Add(point);
             }
 
             initialized = true;
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-            if (enabled)
-                DisplayPoints(points);
-            else
-                lidarPoints.ForEach(point => point.SetActive(false));
+            if (!enabled || !initialized || points == null) return;
 
-        }
-
-        private void DisplayPoints(Vector3[] points)
-        {
-            Vector3 lastPlacedPoint = Vector3.zero;
-
-            int lidarIndex = 0;
-
+            matrices.Clear();
             for (int i = 0; i < points.Length; i++)
             {
-                lidarPoints[lidarIndex].transform.position = points[i];
-                lidarPoints[lidarIndex].SetActive(true);
-                lastPlacedPoint = points[i];
-                lidarIndex++;
+                var matrix = Matrix4x4.TRS(points[i], Quaternion.identity, Vector3.one * pointScale);
+                matrices.Add(matrix);
             }
 
-            for (int i = lidarIndex; i < lidarPoints.Count; i++)
+            for (int i = 0; i < matrices.Count; i += 1023)
             {
-                lidarPoints[i].SetActive(false);
+                int batchCount = Mathf.Min(1023, matrices.Count - i);
+                Graphics.DrawMeshInstanced(
+                    lidarPointMesh,
+                    0,
+                    lidarPointMaterial,
+                    matrices.GetRange(i, batchCount)
+                );
             }
         }
 
         public void UpdatePoints(RosMessage<ScanMsg> message)
         {
-            if (initialized)
+            if (!initialized) return;
+
+            List<Vector3> validPoints = new List<Vector3>();
+
+            for (int i = 0; i < message.msg.ranges.Length; i++)
             {
-                List<Vector3> validPoints = new List<Vector3>();
+                if (!message.msg.ranges[i].HasValue) continue;
 
-                for (int i = 0; i < message.msg.ranges.Length; i++)
-                {
-                    if (!message.msg.ranges[i].HasValue)
-                    {
-                        continue;
-                    }
+                float range = message.msg.ranges[i].Value;
+                float angle = message.msg.angle_min + message.msg.angle_increment * i;
+                Vector3 point = PositionManager.TranslateLidarToUnityVector(range, angle);
 
-                    float range = message.msg.ranges[i].Value;
-                    float angle = message.msg.angle_min + message.msg.angle_increment * i;
-                    Vector3 point = PositionManager.TranslateLidarToUnityVector(range, angle);
+                bool tooClose = validPoints.Any(existingPoint =>
+                    Vector3.Distance(existingPoint, point) < density ||
+                    Vector3.Distance(point, Vector3.zero) < density);
 
-                    bool istooclose = validPoints.Any(existingPoint =>
-                        Vector3.Distance(existingPoint, point) < density ||
-                        Vector3.Distance(point, Vector3.zero) < density);
+                if (tooClose) continue;
 
-                    if (istooclose)
-                    {
-                        continue;
-                    }
-
-                    validPoints.Add(point);
-                }
-
-                this.points = validPoints.ToArray();
+                validPoints.Add(point);
             }
+
+            this.points = validPoints.ToArray();
         }
     }
 }

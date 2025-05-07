@@ -5,9 +5,10 @@
     using Newtonsoft.Json;
     using System.Collections.Generic;
     using UnityEngine;
+    using System.IO;
 
     /// <summary>
-    /// Handles the messages recieved from the websocket.
+    /// Handles the messages received from the websocket.
     /// </summary>
     internal class ROSBridgeClient : MonoBehaviour
     {
@@ -43,8 +44,22 @@
         }
         private string GetMessageTopic(string jsonMessage)
         {
-            var jsonObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonMessage);
-            return jsonObject["topic"].ToString();
+            using (var stringReader = new StringReader(jsonMessage))
+            using (var jsonReader = new JsonTextReader(stringReader))
+            {
+                while (jsonReader.Read())
+                {
+                    if (jsonReader.TokenType == JsonToken.PropertyName &&
+                        (string)jsonReader.Value == "topic")
+                    {
+                        jsonReader.Read();
+                        return jsonReader.Value?.ToString();
+                    }
+                }
+            }
+
+            Debug.Log("Topic field not found in JSON message.");
+            return null;
         }
 
         public void HandleMessage(string jsonMessage)
@@ -65,11 +80,11 @@
                 case Topic.plan:
                 case Topic.plansmoothed:
                 case Topic.globalpath:
-                    RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    //RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
                     //handle plan message here
                     break;
                 default:
-                    Debug.LogError($"[ROSBridgeClient] Unknown topic: {topic}");
+                    Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");
                     return;
             }
         }

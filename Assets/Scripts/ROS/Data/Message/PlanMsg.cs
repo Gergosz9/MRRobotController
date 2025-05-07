@@ -12,24 +12,22 @@
     /// An array of poses that represents a Path for a robot to follow
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
+
+    [JsonConverter(typeof(PlanMsgJsonConverter))]
     internal class PlanMsg : Msg
     {
         [JsonProperty]
-        public Time timeStamp;
-        [JsonProperty]
-        [JsonConverter(typeof(PoseJsonConverter))]
-        public Pose[] poses { get; set; }
+        public PlanPose[] poses { get; set; }
 
         public PlanMsg()
         {
-            timeStamp = new Time();
-            poses = new Pose[0];
+            Header header = new Header();
+            poses = new PlanPose[0];
         }
 
-        public PlanMsg(Header header, Time timeStamp, Pose[] poses)
+        public PlanMsg(Header header, PlanPose[] poses)
         {
             this.header = header;
-            this.timeStamp = timeStamp;
             this.poses = poses;
         }
     }
