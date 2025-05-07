@@ -1,22 +1,33 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Naming convention: https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/LaserScan.html
     ///
     /// ScanMsg is a message type used in ROS to represent LIDAR scan data.
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     internal class ScanMsg : Msg
     {
+        [JsonProperty]
         public float angle_min { get; set; }
+        [JsonProperty]
         public float angle_max { get; set; }
+        [JsonProperty]
         public float angle_increment { get; set; }
+        [JsonProperty]
         public float time_increment { get; set; }
+        [JsonProperty]
         public float scan_time { get; set; }
+        [JsonProperty]
         public float range_min { get; set; }
+        [JsonProperty]
         public float range_max { get; set; }
+        [JsonProperty]
         public float?[] ranges { get; set; }
+        [JsonProperty]
         public float?[] intensities { get; set; }
         public ScanMsg()
         {

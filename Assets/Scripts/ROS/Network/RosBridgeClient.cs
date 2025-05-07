@@ -50,14 +50,13 @@
         public void HandleMessage(string jsonMessage)
         {
             string topic = GetMessageTopic(jsonMessage);
-            Debug.Log(jsonMessage);
 
             switch (topic)
             {
                 case Topic.scan:
                 case Topic.scansim:
                     RosMessage<ScanMsg> scanMessage = JsonConvert.DeserializeObject<RosMessage<ScanMsg>>(jsonMessage);
-                    lidarDisplay.displayScan(scanMessage);
+                    lidarDisplay.UpdatePoints(scanMessage);
                     break;
                 case Topic.costmap:
                     RosMessage<CostMapMsg> costmapMessage = JsonConvert.DeserializeObject<RosMessage<CostMapMsg>>(jsonMessage);

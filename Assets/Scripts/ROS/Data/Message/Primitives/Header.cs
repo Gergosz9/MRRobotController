@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
+    using Newtonsoft.Json;
     using UnityEngine;
 
 
@@ -8,9 +9,14 @@
     ///
     /// Header is a common message header used in ROS messages.
     /// </summary>
+
+    [JsonObject(MemberSerialization.OptIn)]
     internal class Header
     {
+        [JsonProperty]
         public Time stamp { get; set; }
+
+        [JsonProperty]
         public string frame_id { get; set; }
 
         public Header()

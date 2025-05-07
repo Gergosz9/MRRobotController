@@ -42,22 +42,27 @@ public class RosNavigator : MonoBehaviour
             q.y = 0;
             Quaternion quaternion = Quaternion.LookRotation(q);
 
-            //string message = ConstructGoalPoseMsg(targetPosition, quaternion);
-            //webSocketClient.SendMessage(message);
+            Pose p = PositionManager.TranslateToROSPose(new Pose(targetPosition, quaternion));
+
+            string message = ConstructGoalPoseMsg(p);
+            webSocketClient.SendMessage(message);
         }
     }
 
-    private string ConstructGoalPoseMsg(Vector3 targetPosition, Quaternion targetRotation)
+    private string ConstructGoalPoseMsg(Pose pose)
     {
-        Time time = new Time((uint)DateTime.Now.Second, (uint)DateTime.Now.Millisecond);
+        var rosMessage = new RosMessage<GoalPoseMsg>(
+            Operation.publish,
+            "/goal_pose",
+            new GoalPoseMsg(
+                new Header(
+                    new Time((uint)DateTime.Now.Second, (uint)DateTime.Now.Millisecond),
+                    "GoalPose"
+                ),
+                pose
+            )
+        );
 
-        Header header = new Header(time, "GoalPose");
-
-        GoalPoseMsg goalPoseMsg = new GoalPoseMsg(header, new Pose(targetPosition, targetRotation));
-
-        RosMessage<GoalPoseMsg> rosMessage = new RosMessage<GoalPoseMsg>(Operation.publish, "/goal_pose", goalPoseMsg);
-
-        string jsonString = JsonConvert.SerializeObject(rosMessage, Formatting.Indented);
-        return jsonString;
+        return JsonConvert.SerializeObject(rosMessage, Formatting.None);
     }
 }

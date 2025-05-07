@@ -1,6 +1,7 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
+    using Newtonsoft.Json;
     using UnityEngine;
     using Time = Primitives.Time;
 
@@ -8,14 +9,22 @@
     /// CostMapMsg is a message type that contains information about a cost map,
     /// including its resolution, dimensions, and origin.
     /// </summary>
+
+    [JsonObject(MemberSerialization.OptIn)]
     internal class CostMapMsg : Msg
     {
         public class Info
         {
+            [JsonProperty]
             public Time map_load_time { get; set; }
+            [JsonProperty]
             public float resolution { get; set; }
+            [JsonProperty]
             public uint width { get; set; }
+            [JsonProperty]
             public uint height { get; set; }
+            [JsonProperty]
+            [JsonConverter(typeof(PoseJsonConverter))]
             public Pose origin { get; set; }
 
             public Info()

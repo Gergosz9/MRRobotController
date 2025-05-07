@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
+    using Newtonsoft.Json;
     using UnityEngine;
 
     /// <summary>
@@ -7,9 +8,13 @@
     ///
     /// Defines the Time message type used in ROS messages.
     /// </summary>
+
+    [JsonObject(MemberSerialization.OptIn)]
     internal class Time
     {
+        [JsonProperty]
         public uint sec { get; set; }
+        [JsonProperty]
         public uint nanosec { get; set; }
         public Time()
         {

@@ -30,9 +30,19 @@
 
         public void Connect()
         {
-            Debug.Log("[WebSocket] Connecting...");
-
-            webSocket.Connect();
+            if (webSocket.State == WebSocketState.Connecting)
+            {
+                Debug.Log("[WebSocket] Connection already in progress...");
+            }
+            if (webSocket.State == WebSocketState.Closed)
+            {
+                Debug.Log("[WebSocket] Connecting...");
+                webSocket.Connect();
+            }
+            if (webSocket.State == WebSocketState.Open)
+            {
+                Debug.Log("[WebSocket] Already connected.");
+            }
         }
 
         private void OnDestroy()
@@ -44,7 +54,7 @@
         {
             var encoded = Encoding.UTF8.GetBytes(message);
             webSocket.Send(encoded);
-            Debug.Log("Message sent: " + message);
+            Debug.Log("[WebSocket] Sent: " + message);
         }
 
         public void Subscribe(string topic)
