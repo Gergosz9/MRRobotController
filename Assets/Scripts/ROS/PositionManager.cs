@@ -16,7 +16,7 @@ public class PositionManager : MonoBehaviour
     [SerializeField]
     static Pose relativeCenter = new Pose(Vector3.zero, Quaternion.identity);
     [SerializeField]
-    private static WebSocketClient webSocketClient;
+    private WebSocketClient webSocketClient;
 
     public Pose RelativeCenter
     {
@@ -39,28 +39,24 @@ public class PositionManager : MonoBehaviour
         currentPose = new Pose();
     }
 
-    public static void SendRobotTo(Pose goal)
+    public void SendRobotTo(Pose goal)
     {
         Pose translatedGoal = TranslateToROSPose(goal);
 
-        GoalPoseMsg msg = msg = new GoalPoseMsg
-        {
-            header = new Header
-            {
-                stamp = new Time
-                {
-                    sec = (uint)DateTime.Now.Second,
-                    nanosec = (uint)DateTime.Now.Millisecond * 1000
-                },
-                frame_id = "base_link"
-            },
-            pose = translatedGoal
-        };
-        string message = JsonConvert.SerializeObject(new RosMessage<GoalPoseMsg>("publish", "/goal_pose", msg));
+        var rosMessage = new RosMessage<GoalPoseMsg>(
+            Operation.publish,
+            "/goal_pose",
+            new GoalPoseMsg(
+                new Header(
+                    new Time((uint)DateTime.Now.Second, (uint)DateTime.Now.Millisecond*1000),
+                    "map"
+                ),
+                translatedGoal
+            )
+        );
 
-
+        string message = JsonConvert.SerializeObject(rosMessage);
         webSocketClient.SendMessage(message);
-        Debug.Log("Sending goal: " + translatedGoal.ToString());
 
     }
 
@@ -79,13 +75,13 @@ public class PositionManager : MonoBehaviour
     public static Vector3 TranslateToUnityVector(Vector3 vector)
     {
         Vector3 unityVector = new Vector3(vector.y, vector.z, -vector.x);
-        return unityVector;
+        return unityVector+relativeCenter.position;
     }
 
     public static Vector3 TranslateToROSVector(Vector3 vector)
     {
-        Vector3 rosVector = new Vector3(-vector.z, vector.x, vector.y);
-        return rosVector;
+        Vector3 rosVector = new Vector3(-vector.z, vector.x, 0f);
+        return rosVector-relativeCenter.position;
     }
 
     public static Quaternion TranslateToUnityQuarternion(Quaternion quaternion)
@@ -107,7 +103,7 @@ public class PositionManager : MonoBehaviour
             range * Mathf.Sin(angle),
             0f
         );
-
-        return TranslateToUnityVector(rospoint);
+        Vector3 translated = TranslateToUnityVector(rospoint);
+        return translated;
     }
 }

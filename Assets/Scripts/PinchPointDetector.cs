@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.ARFoundation;
 
 
 /// <summary>
@@ -18,6 +19,7 @@ public class PinchPointDetector : MonoBehaviour
     private MRTKRayInteractor rayInteractorRight;
     [SerializeField]
     private MRTKRayInteractor rayInteractorLeft;
+
     [SerializeField]
     private GameObject previewPointer;
 
