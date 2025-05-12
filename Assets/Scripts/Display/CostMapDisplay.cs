@@ -39,11 +39,16 @@ internal class CostMapDisplay : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                // Calculate the index in the 1D data array
                 int index = y * (int)width + x;
                 int cost = costmap.msg.data[index];
 
-                Vector3 origin = PositionManager.ConvertToUnityVector(costmap.msg.info.origin.position);
+                Vector3 origin = PositionManager.ConvertToUnityPoint(
+                    new Vector3(
+                        costmap.msg.info.origin.position.x,
+                        costmap.msg.info.origin.position.y,
+                        costmap.msg.info.origin.position.z
+                    )
+                );
 
                 float wx = origin.x + y * resolution;
                 float wy = origin.y;
@@ -68,12 +73,12 @@ internal class CostMapDisplay : MonoBehaviour
                             color = Color.black;
                             break;
                     }
-                    // Draw a line for each cell (for example, vertical line representing cost)
+
                     Debug.DrawLine(
                             new Vector3(wx, wy, wz),
                             new Vector3(wx, wy + 0.1f, wz),
                             color,
-                            5000f
+                            5f
                         );
                 }
             }
