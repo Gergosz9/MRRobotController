@@ -26,6 +26,14 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.microsoft.mixedreality.toolkit.standardassets": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.toolkit.standardassets-2.8.3.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.textmeshpro": "2.1.4"
+      }
+    },
     "com.microsoft.mixedreality.visualprofiler": {
       "version": "https://github.com/microsoft/VisualProfiler-Unity.git#v2.2.0",
       "depth": 0,
@@ -34,11 +42,10 @@
       "hash": "22d727d4d1641c27fa85a7519cf76b81890c8f3d"
     },
     "com.microsoft.mrtk.graphicstools.unity": {
-      "version": "0.8.0",
+      "version": "file:MixedReality/com.microsoft.mrtk.graphicstools.unity-0.5.12.tgz",
       "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
+      "source": "local-tarball",
+      "dependencies": {}
     },
     "com.microsoft.mrtk.tts.windows": {
       "version": "1.0.4",
@@ -322,9 +329,9 @@
       }
     },
     "org.mixedrealitytoolkit.core": {
-      "version": "file:../../../org.mixedrealitytoolkit.core",
+      "version": "file:MixedReality/org.mixedrealitytoolkit.core-3.2.0.tgz",
       "depth": 0,
-      "source": "local",
+      "source": "local-tarball",
       "dependencies": {
         "com.unity.xr.interaction.toolkit": "2.3.0",
         "com.unity.xr.management": "4.2.1",
@@ -359,9 +366,9 @@
       }
     },
     "org.mixedrealitytoolkit.input": {
-      "version": "file:../../../org.mixedrealitytoolkit.input",
+      "version": "file:MixedReality/org.mixedrealitytoolkit.input-3.2.2.tgz",
       "depth": 0,
-      "source": "local",
+      "source": "local-tarball",
       "dependencies": {
         "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
         "com.unity.inputsystem": "1.6.1",
