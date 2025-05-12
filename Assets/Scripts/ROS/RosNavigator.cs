@@ -42,7 +42,7 @@ public class RosNavigator : MonoBehaviour
             q.y = 0;
             Quaternion quaternion = Quaternion.LookRotation(q);
 
-            Pose p = PositionManager.TranslateToROSPose(new Pose(targetPosition, quaternion));
+            Pose p = PositionManager.ConvertToROSPose(new Pose(targetPosition, quaternion));
 
             string message = ConstructGoalPoseMsg(p);
             webSocketClient.SendMessage(message);

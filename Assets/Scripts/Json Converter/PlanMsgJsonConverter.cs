@@ -2,7 +2,7 @@
 using System;
 using Assets.Scripts.ROS.Data.Message;
 using Assets.Scripts.ROS.Data.Message.Primitives;
-
+/*
 internal class PlanMsgJsonConverter : JsonConverter<PlanMsg>
 {
     public override void WriteJson(JsonWriter writer, PlanMsg value, JsonSerializer serializer)
@@ -53,3 +53,4 @@ internal class PlanMsgJsonConverter : JsonConverter<PlanMsg>
         return planMsg;
     }
 }
+*/

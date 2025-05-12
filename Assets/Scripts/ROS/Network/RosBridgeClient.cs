@@ -16,6 +16,10 @@
         private WebSocketClient webSocketClient;
         [SerializeField]
         private LidarDisplay lidarDisplay;
+        [SerializeField]
+        private PathDisplay pathDisplay;
+        [SerializeField]
+        private CostMapDisplay costMapDisplay;
 
         public void Start()
         {
@@ -75,13 +79,13 @@
                     break;
                 case Topic.costmap:
                     RosMessage<CostMapMsg> costmapMessage = JsonConvert.DeserializeObject<RosMessage<CostMapMsg>>(jsonMessage);
-                    //handle costmap message here
+                    costMapDisplay.UpdateCostMap(costmapMessage);
                     break;
                 case Topic.plan:
                 case Topic.plansmoothed:
                 case Topic.globalpath:
-                    //RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
-                    //handle plan message here
+                    RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    pathDisplay.UpdatePath(planMessage);
                     break;
                 default:
                     Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");
