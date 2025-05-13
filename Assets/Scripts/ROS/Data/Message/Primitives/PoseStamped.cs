@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
+    using Assets.Scripts.Json_Converter.Message.Primitives;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -9,6 +10,7 @@
     using UnityEngine;
 
     [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(PoseStampedJsonConverter))]
     internal class PoseStamped
     {
         [JsonProperty]

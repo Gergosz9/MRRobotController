@@ -25,19 +25,31 @@
         public override PoseStamped ReadJson(JsonReader reader, Type objectType, PoseStamped existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             PoseStamped poseStamped = new PoseStamped();
+
             while (reader.Read())
             {
                 if (reader.TokenType == JsonToken.PropertyName)
                 {
                     string propertyName = (string)reader.Value;
+                    reader.Read();
+
                     if (propertyName == "header")
                     {
-                        poseStamped.header = serializer.Deserialize<Header>(reader);
+                        if (reader.TokenType == JsonToken.StartObject)
+                        {
+                            poseStamped.header = serializer.Deserialize<Header>(reader);
+                        }
                     }
                     else if (propertyName == "pose")
                     {
-                        var poseConverter = new PoseJsonConverter();
-                        poseStamped.pose = poseConverter.ReadJson(reader, typeof(Pose), poseStamped.pose, true, serializer);
+                        if (reader.TokenType == JsonToken.StartObject)
+                        {
+                            poseStamped.pose = serializer.Deserialize<Pose>(reader);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"Unknown property: {propertyName}");
                     }
                 }
                 else if (reader.TokenType == JsonToken.EndObject)
@@ -45,6 +57,7 @@
                     break;
                 }
             }
+
             return poseStamped;
         }
     }
