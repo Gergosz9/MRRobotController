@@ -1,8 +1,4 @@
 using Assets.Scripts.ROS.Data.Message;
-using Assets.Scripts.ROS.Data.Message.Primitives;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 
 internal class PathDisplay : MonoBehaviour
@@ -38,9 +34,9 @@ internal class PathDisplay : MonoBehaviour
 
     public void UpdatePath(RosMessage<PlanMsg> plan)
     {
-        for(int i = 0; i < plan.msg.poses.Length; i++)
+        for (int i = 0; i < plan.msg.poses.Length; i++)
         {
-            Vector3 current = PositionManager.ConvertToUnityVector(plan.msg.poses[i].position);
+            Vector3 current = PositionManager.TranslateToUnityPoint(plan.msg.poses[i].position, PositionManager.Odom);
 
             Debug.DrawLine(current, current + Vector3.up * 0.1f, Color.red, 5000f);
         }
