@@ -26,6 +26,7 @@
                 serializer.Serialize(writer, pose.header);
                 writer.WriteEndObject();
             }
+            writer.WriteEndArray();
             writer.WriteEndObject();
         }
         public override PathMsg ReadJson(JsonReader reader, Type objectType, PathMsg existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -47,15 +48,7 @@
                     }
                     else if (propertyName == "poses")
                     {
-                        var poses = new List<PoseStamped>();
-                        var poseStampedConverter = new PoseStampedJsonConverter();
-                        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-                        {
-                            PoseStamped poseStamped = new PoseStamped();
-                            poseStamped = poseStampedConverter.ReadJson(reader, typeof(PoseStamped), poseStamped, true, serializer);
-                            poses.Add(poseStamped);
-                        }
-                        pathMsg.poses = poses.ToArray();
+                        pathMsg.poses = serializer.Deserialize<PoseStamped[]>(reader);
                     }
                     else
                     {

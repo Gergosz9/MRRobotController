@@ -36,13 +36,13 @@ internal class PathDisplay : MonoBehaviour
 
     }
 
-    public void UpdatePath(RosMessage<PlanMsg> plan)
+    public void UpdatePath(RosMessage<PathMsg> plan)
     {
         for(int i = 0; i < plan.msg.poses.Length; i++)
         {
-            Vector3 current = PositionManager.ConvertToUnityVector(plan.msg.poses[i].position);
+            Vector3 current = PositionManager.ConvertToUnityVector(plan.msg.poses[i].pose.position);
 
-            Debug.DrawLine(current, current + Vector3.up * 0.1f, Color.red, 5000f);
+            Debug.DrawLine(current, current + Vector3.up * 0.1f, Color.red, 5f);
         }
     }
 }

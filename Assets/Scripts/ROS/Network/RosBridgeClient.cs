@@ -6,6 +6,8 @@
     using System.Collections.Generic;
     using UnityEngine;
     using System.IO;
+    using Assets.Scripts.Json_Converter.Message.Primitives;
+    using Assets.Scripts.Json_Converter.Message;
 
     /// <summary>
     /// Handles the messages received from the websocket.
@@ -84,10 +86,11 @@
                 case Topic.plan:
                 case Topic.plansmoothed:
                     //RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    //Not used in the current version
                     break;
                 case Topic.globalpath:
                     RosMessage<PathMsg> globalPathMessage = JsonConvert.DeserializeObject<RosMessage<PathMsg>>(jsonMessage);
-                    //pathDisplay.UpdatePath(globalPathMessage);
+                    pathDisplay.UpdatePath(globalPathMessage);
                     break;
                 default:
                     Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");
