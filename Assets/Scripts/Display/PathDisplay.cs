@@ -1,9 +1,5 @@
 using Assets.Scripts.ROS.Data.Message;
-using Assets.Scripts.ROS.Data.Message.Primitives;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 
 internal class PathDisplay : MonoBehaviour
@@ -44,7 +40,7 @@ internal class PathDisplay : MonoBehaviour
     {
         for (int i = 0; i < plan.msg.poses.Length; i++)
         {
-            Vector3 current = PositionManager.TranslateToUnityPoint(plan.msg.poses[i].position, PositionManager.Odom);
+            Vector3 current = PositionManager.TranslateToUnityPoint(plan.msg.poses[i].pose.position, PositionManager.Odom);
 
             pathPoints.Add(current);
         }
