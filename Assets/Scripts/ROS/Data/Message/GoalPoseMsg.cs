@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
+    using Assets.Scripts.Json_Converter.Message;
     using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
     using UnityEngine;
@@ -9,6 +10,7 @@
     /// </summary>
 
     [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(GoalPoseMsgJsonConverter))]
     internal class GoalPoseMsg : Msg
     {
         [JsonProperty(Order = 1)]

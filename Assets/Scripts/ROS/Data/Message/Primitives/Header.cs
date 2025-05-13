@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
+    using Assets.Scripts.Json_Converter.Message.Primitives;
     using Newtonsoft.Json;
     using UnityEngine;
 
@@ -11,6 +12,7 @@
     /// </summary>
 
     [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(HeaderJsonConverter))]
     internal class Header
     {
         [JsonProperty]

@@ -12,7 +12,7 @@
     /// An array of poses that represents a Path for a robot to follow
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    //[JsonConverter(typeof(PlanMsgJsonConverter))]
+    [JsonConverter(typeof(PlanMsgJsonConverter))]
     internal class PlanMsg : Msg
     {
         [JsonProperty]

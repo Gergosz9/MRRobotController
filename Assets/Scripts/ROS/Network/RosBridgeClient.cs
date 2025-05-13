@@ -83,9 +83,11 @@
                     break;
                 case Topic.plan:
                 case Topic.plansmoothed:
+                    //RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
+                    break;
                 case Topic.globalpath:
-                    RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
-                    pathDisplay.UpdatePath(planMessage);
+                    RosMessage<PathMsg> globalPathMessage = JsonConvert.DeserializeObject<RosMessage<PathMsg>>(jsonMessage);
+                    //pathDisplay.UpdatePath(globalPathMessage);
                     break;
                 default:
                     Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");
