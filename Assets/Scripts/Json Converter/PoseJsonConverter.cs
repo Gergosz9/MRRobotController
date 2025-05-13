@@ -17,7 +17,7 @@ public class PoseJsonConverter : JsonConverter<Pose>
         writer.WritePropertyName("z"); writer.WriteValue(value.position.z);
         writer.WriteEndObject();
 
-        writer.WritePropertyName("rotation");
+        writer.WritePropertyName("orientation");
         writer.WriteStartObject();
         writer.WritePropertyName("x"); writer.WriteValue(value.rotation.x);
         writer.WritePropertyName("y"); writer.WriteValue(value.rotation.y);
@@ -53,7 +53,7 @@ public class PoseJsonConverter : JsonConverter<Pose>
                     }
                     position = new Vector3(x, y, z);
                 }
-                else if (propertyName == "rotation")
+                else if (propertyName == "orientation")
                 {
                     reader.Read(); // start object
                     float x = 0, y = 0, z = 0, w = 1;

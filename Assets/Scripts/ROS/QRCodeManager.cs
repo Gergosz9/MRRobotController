@@ -30,8 +30,8 @@ public class QRCodeManager : MonoBehaviour
             Debug.Log($"[QRCodeManager] Pos: {qrCode.transform.position} Rot: {qrCode.transform.rotation}");
             qrCodeId = qrCode.trackableId;
 
-            positionManager.RelativeCenter = new Pose(qrCode.transform.position, qrCode.transform.rotation);
-            positionManager.CurrentPose = new Pose(qrCode.transform.position, qrCode.transform.rotation);
+            positionManager.RelativeCenter = new Pose(qrCode.transform.position, Quaternion.Euler(0,qrCode.transform.rotation.eulerAngles.y,0));
+            positionManager.CurrentPose = new Pose(qrCode.transform.position, Quaternion.Euler(0, qrCode.transform.rotation.eulerAngles.y, 0));
 
             Debug.Log("[QRCodeManager] Robot position detected. Relative center set.");
 

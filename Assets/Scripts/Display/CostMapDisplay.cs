@@ -42,7 +42,7 @@ internal class CostMapDisplay : MonoBehaviour
                 int index = y * (int)width + x;
                 int cost = costmap.msg.data[index];
 
-                Vector3 origin = PositionManager.ConvertToUnityPoint(
+                Vector3 origin = PositionManager.ConvertToUnityVector(
                     new Vector3(
                         costmap.msg.info.origin.position.x,
                         costmap.msg.info.origin.position.y,

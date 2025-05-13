@@ -14,7 +14,7 @@ using Time = Assets.Scripts.ROS.Data.Message.Primitives.Time;
 public class PositionManager : MonoBehaviour
 {
     [SerializeField]
-    static Pose relativeCenter = new Pose(Vector3.zero,Quaternion.identity);
+    static Pose relativeCenter = new Pose(Vector3.zero, Quaternion.identity);
 
     [SerializeField]
     private static WebSocketClient webSocketClient;
@@ -22,7 +22,14 @@ public class PositionManager : MonoBehaviour
     public Pose RelativeCenter
     {
         get { return relativeCenter; }
-        set { relativeCenter = value; }
+        set
+        {
+            relativeCenter =
+                new Pose(
+                    value.position,
+                    value.rotation
+                );
+        }
     }
 
     Pose currentPose;
@@ -43,6 +50,7 @@ public class PositionManager : MonoBehaviour
     public static void SendRobotTo(Pose goal)
     {
         Pose convertedGoal = ConvertToROSPose(goal);
+        convertedGoal.position.z = 0;
 
         GoalPoseMsg msg = msg = new GoalPoseMsg
         {
@@ -85,8 +93,9 @@ public class PositionManager : MonoBehaviour
     // </summary>
     public static Vector3 ConvertToUnityVector(Vector3 vector)
     {
-        Vector3 unityVector = new Vector3(vector.y, vector.z, -vector.x);
-        return relativeCenter.position + unityVector;
+        Vector3 unityDirection = new Vector3(vector.y, vector.z, -vector.x);
+        Vector3 rotatedDirection = relativeCenter.rotation * unityDirection;
+        return relativeCenter.position + rotatedDirection;
     }
     // <summary>
     // Vector3 is a 3D vector in ROS coordinates, it's only offset by the relative center
@@ -94,8 +103,9 @@ public class PositionManager : MonoBehaviour
     public static Vector3 ConvertToROSVector(Vector3 vector)
     {
         vector -= relativeCenter.position;
-        Vector3 rosVector = new Vector3(-vector.z, vector.x, vector.y);
-        return rosVector;
+        vector = Quaternion.Inverse(relativeCenter.rotation) * vector;
+        Vector3 rosDirection = new Vector3(-vector.z, vector.x, vector.y);
+        return rosDirection;
     }
     //<summary>
     // Quaternion is a rotation in Unity coordinates, it's rotated by the relative center
@@ -114,24 +124,6 @@ public class PositionManager : MonoBehaviour
         Quaternion rosQuaternion = new Quaternion(-quaternion.z, quaternion.x, quaternion.y, quaternion.w);
         return rosQuaternion;
     }
-    // <summary>
-    // Point is a 3D point in ROS coordinates, it's rotated by the relative center then offset
-    // </summary>
-    public static Vector3 ConvertToUnityPoint(Vector3 point)
-    {
-        Vector3 unityDirection = new Vector3(point.y, point.z, -point.x);
-        Vector3 rotatedDirection = relativeCenter.rotation * unityDirection;
-        return relativeCenter.position + rotatedDirection;
-    }
-    // <summary>
-    // Point is a 3D point in Unity coordinates, it's rotated by the relative center then offset
-    // </summary>
-    public static Vector3 ConvertToROSPoint(Vector3 point)
-    {
-        point -= relativeCenter.position;
-        Vector3 rosDirection = new Vector3(-point.z, point.x, point.y);
-        return Quaternion.Inverse(relativeCenter.rotation) * rosDirection;
-    }
 
     public static Vector3 ConvertLidarToUnityVector(float range, float angle)
     {
@@ -141,6 +133,6 @@ public class PositionManager : MonoBehaviour
             0f
         );
 
-        return ConvertToUnityPoint(rospoint);
+        return ConvertToUnityVector(rospoint);
     }
 }
