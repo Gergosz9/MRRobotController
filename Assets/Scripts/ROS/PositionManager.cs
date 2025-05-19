@@ -15,13 +15,26 @@ public class PositionManager : MonoBehaviour
 {
     [SerializeField]
     private static WebSocketClient webSocketClient;
+    [SerializeField]
+    private static GameObject positionPrefab;
 
     static Pose base_link;
     static Pose odom;
     static Pose world;
 
+    private static GameObject baseLinkPrefab;
+    private static GameObject odomPrefab;
+    private static GameObject worldPrefab;
+
     static Pose BaseLinkToOdomOffset;
     static Pose odomToWorldOffset;
+
+    public void Awake()
+    {
+        baseLinkPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
+        odomPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
+        worldPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
+    }
 
     public static Pose Base_link
     {
@@ -29,8 +42,8 @@ public class PositionManager : MonoBehaviour
         set
         {
             base_link = value;
-            RecalculateOdom();
-            RecalculateWorld();
+            RecalculateOdomFromBaseLink();
+            RecalculateWorldFromOdom();
         }
     }
 
@@ -50,8 +63,7 @@ public class PositionManager : MonoBehaviour
         set
         {
             BaseLinkToOdomOffset = value;
-            RecalculateOdom();
-            RecalculateWorld();
+            RecalculateBaseLinkFromOdom();
         }
     }
 
@@ -61,18 +73,39 @@ public class PositionManager : MonoBehaviour
         set
         {
             odomToWorldOffset = value;
-            RecalculateWorld();
+            RecalculateOdomFromWorld();
+            RecalculateBaseLinkFromOdom();
         }
     }
 
-    public static void RecalculateOdom()
+    public static void RecalculateOdomFromBaseLink()
     {
         odom = ConvertToUnityPose(BaseLinkToOdomOffset, base_link);
+        odomPrefab.transform.position = odom.position;
+        odomPrefab.transform.rotation = odom.rotation;
     }
 
-    public static void RecalculateWorld()
+    public static void RecalculateWorldFromOdom()
     {
         world = ConvertToUnityPose(odomToWorldOffset, odom);
+        worldPrefab.transform.position = world.position;
+        worldPrefab.transform.rotation = world.rotation;
+    }
+
+    public static void RecalculateBaseLinkFromOdom()
+    {
+        var odomToBaseLinkOffset = new Pose(-BaseLinkToOdomOffset.position, Quaternion.Inverse(BaseLinkToOdomOffset.rotation));
+        base_link = ConvertToUnityPose(odomToBaseLinkOffset, odom);
+        baseLinkPrefab.transform.position = base_link.position;
+        baseLinkPrefab.transform.rotation = base_link.rotation;
+    }
+
+    public static void RecalculateOdomFromWorld()
+    {
+        var worldToOdomOffset = new Pose(-OdomToWorldOffset.position, Quaternion.Inverse(OdomToWorldOffset.rotation));
+        odom = ConvertToUnityPose(worldToOdomOffset, world);
+        odomPrefab.transform.position = base_link.position;
+        odomPrefab.transform.rotation = base_link.rotation;
     }
 
     public static Pose ConvertToROSPose(Pose pose)
