@@ -1,6 +1,4 @@
 using Assets.Scripts.ROS.Data.Message;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 internal class CostMapDisplay : MonoBehaviour
@@ -42,12 +40,12 @@ internal class CostMapDisplay : MonoBehaviour
                 int index = y * (int)width + x;
                 int cost = costmap.msg.data[index];
 
-                Vector3 origin = PositionManager.ConvertToUnityVector(
+                Vector3 origin = PositionManager.TranslateToUnityPoint(
                     new Vector3(
                         costmap.msg.info.origin.position.x,
                         costmap.msg.info.origin.position.y,
                         costmap.msg.info.origin.position.z
-                    )
+                    ), PositionManager.Odom
                 );
 
                 float wx = origin.x + y * resolution;

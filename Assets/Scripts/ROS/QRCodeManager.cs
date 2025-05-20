@@ -1,6 +1,5 @@
 using Microsoft.MixedReality.OpenXR;
 using UnityEngine;
-using UnityEngine.XR.ARSubsystems;
 
 
 /// <summary>
@@ -9,11 +8,7 @@ using UnityEngine.XR.ARSubsystems;
 public class QRCodeManager : MonoBehaviour
 {
     [SerializeField]
-    private PositionManager positionManager;
-
-
-    bool QRFirstDetected = true;
-    TrackableId qrCodeId;
+    private string qrCodeIdString = "R0";
 
     void Awake()
     {
@@ -22,38 +17,14 @@ public class QRCodeManager : MonoBehaviour
 
     void OnQRCodesChanged(ARMarkersChangedEventArgs args)
     {
-        if (QRFirstDetected && args.added.Count > 0)
+        foreach (var qrCode in args.updated)
         {
-            var qrCode = args.added[0];
-
-            Debug.Log($"[QRCodeManager] QR code with the ID {qrCode.trackableId} added.");
-            Debug.Log($"[QRCodeManager] Pos: {qrCode.transform.position} Rot: {qrCode.transform.rotation}");
-            qrCodeId = qrCode.trackableId;
-
-            positionManager.RelativeCenter = new Pose(qrCode.transform.position, Quaternion.Euler(0,qrCode.transform.rotation.eulerAngles.y,0));
-            positionManager.CurrentPose = new Pose(qrCode.transform.position, Quaternion.Euler(0, qrCode.transform.rotation.eulerAngles.y, 0));
-
-            Debug.Log("[QRCodeManager] Robot position detected. Relative center set.");
-
-            QRFirstDetected = false;
-        }
-        foreach (ARMarker qrCode in args.added)
-        {
-            Debug.Log($"[QRCodeManager] QR code with the ID {qrCode.trackableId} added.");
-            Debug.Log($"[QRCodeManager] Pos: {qrCode.transform.position} Rot: {qrCode.transform.rotation}");
-        }
-
-        foreach (ARMarker qrCode in args.removed)
-            Debug.Log($"[QRCodeManager] QR code with the ID {qrCode.trackableId} removed.");
-
-        foreach (ARMarker qrCode in args.updated)
-        {
-            Debug.Log($"[QRCodeManager] QR code with the ID {qrCode.trackableId} updated.");
-            Debug.Log($"[QRCodeManager] Pos:{qrCode.transform.position} Rot:{qrCode.transform.rotation}");
-            if (qrCode.trackableId == qrCodeId)
+            if (qrCode.GetDecodedString() == qrCodeIdString)
             {
-                positionManager.CurrentPose = new Pose(qrCode.transform.position, qrCode.transform.rotation);
-                Debug.Log("[QRCodeManager] Robot position updated by ARMarker.");
+                Pose qrPose = new Pose(qrCode.transform.position, new Quaternion(0, qrCode.transform.rotation.y, 0, 0) * Quaternion.Euler(0, -90, 0));
+                Debug.Log("QR Code detected: " + qrCode.GetDecodedString() + " at position: " + qrPose.position.ToString());
+                PositionManager.Base_link = qrPose;
+                Debug.Log("Link base updated by ARManager");
             }
         }
     }
