@@ -2,15 +2,15 @@
 {
     using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     [JsonObject(MemberSerialization.OptIn)]
     internal class TFMessage
     {
+        [JsonProperty]
+        public string op { get; set; }
+        [JsonProperty]
+        public string topic { get; set; }
+
         [JsonProperty]
         public TransformStamped[] transforms { get; set; }
 

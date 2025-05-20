@@ -4,10 +4,8 @@
     using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
     using System.Collections.Generic;
-    using UnityEngine;
     using System.IO;
-    using Assets.Scripts.Json_Converter.Message.Primitives;
-    using Assets.Scripts.Json_Converter.Message;
+    using UnityEngine;
 
     /// <summary>
     /// Handles the messages received from the websocket.
@@ -42,7 +40,8 @@
                 Topic.costmap,
                 Topic.plan,
                 Topic.plansmoothed,
-                Topic.globalpath
+                Topic.globalpath,
+                Topic.tf
             };
 
             topics.ForEach(topic => webSocketClient.Subscribe(topic));
@@ -91,6 +90,10 @@
                 case Topic.globalpath:
                     RosMessage<PathMsg> globalPathMessage = JsonConvert.DeserializeObject<RosMessage<PathMsg>>(jsonMessage);
                     pathDisplay.UpdatePath(globalPathMessage);
+                    break;
+                case Topic.tf:
+                    TFMessage tfMessage = JsonConvert.DeserializeObject<TFMessage>(jsonMessage);
+                    PositionManager.UpdateOffsets(tfMessage.transforms);
                     break;
                 default:
                     Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");

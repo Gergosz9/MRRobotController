@@ -1,7 +1,5 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message
 {
-    using Assets.Scripts.ROS.Data.Message;
-    using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
 
     /// <summary>

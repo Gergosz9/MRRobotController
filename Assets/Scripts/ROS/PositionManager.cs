@@ -11,12 +11,12 @@ using Time = Assets.Scripts.ROS.Data.Message.Primitives.Time;
 /// PositionManager is responsible for managing the position of the robot in Unity and translating between Unity and ROS coordinate systems.
 /// Contains methods to convert between Unity and ROS poses and vectors.
 /// </summary>
-public class PositionManager : MonoBehaviour
+internal class PositionManager : MonoBehaviour
 {
     [SerializeField]
-    private static WebSocketClient webSocketClient;
+    private WebSocketClient webSocketClient;
     [SerializeField]
-    private static GameObject positionPrefab;
+    private GameObject positionPrefab;
 
     static Pose base_link;
     static Pose odom;
@@ -26,7 +26,14 @@ public class PositionManager : MonoBehaviour
     private static GameObject odomPrefab;
     private static GameObject worldPrefab;
 
-    static Pose BaseLinkToOdomOffset;
+    public static void EnableVisualization(bool enable)
+    {
+        baseLinkPrefab.SetActive(enable);
+        odomPrefab.SetActive(enable);
+        worldPrefab.SetActive(enable);
+    }
+
+    static Pose baseLinkToOdomOffset;
     static Pose odomToWorldOffset;
 
     public void Awake()
@@ -57,12 +64,12 @@ public class PositionManager : MonoBehaviour
         get { return world; }
     }
 
-    public static Pose LinkBaseToOdomOffset
+    public static Pose BaseLinkToOdomOffset
     {
-        get { return BaseLinkToOdomOffset; }
+        get { return baseLinkToOdomOffset; }
         set
         {
-            BaseLinkToOdomOffset = value;
+            baseLinkToOdomOffset = value;
             RecalculateBaseLinkFromOdom();
         }
     }
@@ -148,7 +155,7 @@ public class PositionManager : MonoBehaviour
         return TranslateToUnityPoint(rospoint, base_link);
     }
 
-    public static void SendRobotTo(Pose goal)
+    public void SendRobotTo(Pose goal)
     {
         Pose convertedGoal = ConvertToROSPose(goal);
         convertedGoal.position.z = 0;
@@ -170,6 +177,21 @@ public class PositionManager : MonoBehaviour
 
         webSocketClient.SendMessage(message);
         Debug.Log("Sending goal: " + convertedGoal.ToString());
+    }
+
+    public static void UpdateOffsets(TransformStamped[] transforms)
+    {
+        foreach (TransformStamped tf in transforms)
+        {
+            if (tf.child_frame_id == "base_link")
+            {
+                BaseLinkToOdomOffset = new Pose(tf.transform.translation, tf.transform.rotation);
+            }
+            else if (tf.child_frame_id == "odom")
+            {
+                OdomToWorldOffset = new Pose(tf.transform.translation, tf.transform.rotation);
+            }
+        }
     }
     //// <summary>
     //// Pose is a 3D pose in Unity coordinates, the position is offset by the relative center and the rotation is rotated by the relative center
