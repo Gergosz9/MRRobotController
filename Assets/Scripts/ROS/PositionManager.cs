@@ -36,11 +36,12 @@ internal class PositionManager : MonoBehaviour
     static Pose baseLinkToOdomOffset;
     static Pose odomToWorldOffset;
 
-    public void Awake()
+    public void Start()
     {
         baseLinkPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
         odomPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
         worldPrefab = Instantiate(positionPrefab, Vector3.zero, Quaternion.identity);
+        EnableVisualization(false);
     }
 
     public static Pose Base_link
@@ -51,6 +52,8 @@ internal class PositionManager : MonoBehaviour
             base_link = value;
             RecalculateOdomFromBaseLink();
             RecalculateWorldFromOdom();
+            baseLinkPrefab.transform.position = value.position;
+            baseLinkPrefab.transform.rotation = value.rotation;
         }
     }
 
@@ -118,12 +121,12 @@ internal class PositionManager : MonoBehaviour
     public static Pose ConvertToROSPose(Pose pose)
     {
         Vector3 offset = pose.position - base_link.position;
-        offset = Quaternion.Inverse(base_link.rotation) * offset;
+        offset = Quaternion.Euler(0, Quaternion.Inverse(base_link.rotation).eulerAngles.y, 0) * offset;
         Vector3 shiftedVec = base_link.position + offset;
         shiftedVec = shiftedVec - base_link.position;
-        Vector3 rosPosition = new Vector3(-shiftedVec.z, shiftedVec.x, shiftedVec.y);
-        Quaternion rosRotation = Quaternion.Inverse(base_link.rotation) * pose.rotation;
-        rosRotation = new Quaternion(-rosRotation.z, rosRotation.x, rosRotation.y, rosRotation.w);
+        Vector3 rosPosition = new Vector3(shiftedVec.z, -shiftedVec.x, shiftedVec.y);
+        Quaternion rosRotation = Quaternion.Euler(0, Quaternion.Inverse(base_link.rotation).eulerAngles.y, 0) * Quaternion.Euler(0, pose.rotation.eulerAngles.y, 0);   //Quaternion.Inverse(base_link.rotation) * pose.rotation;
+        rosRotation = Quaternion.Euler(0, 0, pose.rotation.eulerAngles.y);
         return new Pose(rosPosition, rosRotation);
     }
 
@@ -131,16 +134,16 @@ internal class PositionManager : MonoBehaviour
     {
         Vector3 shiftedPoint = point + origin.position;
         Vector3 offset = shiftedPoint - origin.position;
-        offset = origin.rotation * offset;
+        offset = Quaternion.Euler(0, origin.rotation.eulerAngles.y, 0) * offset;
         return origin.position + offset;
     }
 
     public static Pose ConvertToUnityPose(Pose pose, Pose origin)
     {
-        Vector3 unityPosition = new Vector3(pose.position.y, pose.position.z, -pose.position.x);
+        Vector3 unityPosition = new Vector3(-pose.position.y, pose.position.z, pose.position.x);
         unityPosition = TranslateToUnityPoint(unityPosition, origin);
-        Quaternion unityRotation = new Quaternion(pose.rotation.y, pose.rotation.z, -pose.rotation.x, pose.rotation.w);
-        unityRotation = origin.rotation * unityRotation;
+        Quaternion unityRotation = Quaternion.Euler(0, pose.rotation.eulerAngles.z, 0);
+        unityRotation = Quaternion.Euler(0, origin.rotation.eulerAngles.y, 0) * Quaternion.Euler(0, unityRotation.eulerAngles.y, 0);
         return new Pose(unityPosition, unityRotation);
     }
 
@@ -148,8 +151,8 @@ internal class PositionManager : MonoBehaviour
     {
         Vector3 rospoint = new Vector3(
             range * Mathf.Cos(angle),
-            range * Mathf.Sin(angle),
-            0f
+            0f,
+            range * Mathf.Sin(angle)
         );
 
         return TranslateToUnityPoint(rospoint, base_link);

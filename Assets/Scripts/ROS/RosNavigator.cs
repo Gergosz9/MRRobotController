@@ -62,7 +62,9 @@ public class RosNavigator : MonoBehaviour
                 pose
             )
         );
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new PoseJsonConverter());
 
-        return JsonConvert.SerializeObject(rosMessage, Formatting.None);
+        return JsonConvert.SerializeObject(rosMessage, Formatting.None, settings);
     }
 }
