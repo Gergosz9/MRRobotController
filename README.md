@@ -1,13 +1,12 @@
-# Budapest University of Technology and Economics (BME)  
-**Faculty of Electrical Engineering and Informatics**  
-**Department of Automation and Applied Informatics**  
-
-## Interactive Robot Control Using HoloLens  
+# Interactive Robot Control Using HoloLens  
 
 **Authors:** Gergő Szalay, Marcell Telek  
 **Consultant:** Dr. Attila Hideg  
-**Location:** Budapest, 2025  
+**Location:** Budapest, 2025
 
+### Budapest University of Technology and Economics (BME)  
+**Faculty of Electrical Engineering and Informatics**  
+**Department of Automation and Applied Informatics**  
 ---
 
 ## Table of Contents  
