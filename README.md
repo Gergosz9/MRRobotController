@@ -1,130 +1,145 @@
-# Hololens Robot Controller
+# Budapest University of Technology and Economics (BME)  
+**Faculty of Electrical Engineering and Informatics**  
+**Department of Automation and Applied Informatics**  
 
-*Placeholder text for general description*
+## Interactive Robot Control Using HoloLens  
 
-# Documentation
+**Authors:** Gergő Szalay, Marcell Telek  
+**Consultant:** Dr. Attila Hideg  
+**Location:** Budapest, 2025  
 
-*Placeholder text for general description*
+---
 
-## Scripts
+## Table of Contents  
 
-### File Structure
+1. [Introduction](#introduction)  
+2. [Objective](#objective)  
+3. [Implementation](#implementation)  
+   - [Unity Scene](#unity-scene)  
+   - [Application Structure](#application-structure)  
+   - [Classes](#classes)  
+   - [JSON Serialization](#json-serialization)  
+4. [Application Usage](#application-usage)  
+   - [Graphical User Interface](#graphical-user-interface)  
+   - [Display](#display)  
+   - [Control](#control)  
+5. [Summary](#summary)  
 
-	Scripts/
-	├── PinchPointDetector.cs
-	├── Display/
-	│   └── LidarDisplay.cs
-	├── ROS/
-	│   ├── PositionManager.cs
-	│   ├── QRCodeManager.cs
-	│   ├── Network/
-	│   │   ├── ConnectionStatusUpdater.cs
-	│   │   ├── RosBridgeClient.cs
-	│   │   └── WebSocketClient.cs
-	│   └── Data/
-	│       ├── RosMessage.cs
-	│       └── Message/
-	│           ├── CostMapMsg.cs
-	│           ├── GoalPoseMsg.cs
-	│           ├── Msg.cs
-	│           ├── PlanMsg.cs
-	│           ├── ScanMsg.cs
-	│           └── Primitives/
-	│               ├── Header.cs
-	│               ├── Operation.cs
-	│               ├── Time.cs
-	│               └── Topic.cs
+---
 
-### Descriptons
+## Introduction  
 
-**PinchPointDetector.cs**
+### Objective  
 
-	/// PinchPointDetector is responsible for detecting pinch gestures using the MRTK HandsAggregatorSubsystem.
-	/// It uses the MRTKRayInteractor to determine the pinch point and updates a preview pointer.
+The goal of this project is to create an interactive augmented reality (AR) application in Unity for the Microsoft HoloLens 2 mixed reality headset. The application allows users to control a robot running the Robot Operating System (ROS) over a network. The relative position of the robot and the headset is determined using a QR code placed on the robot. The HoloLens displays data captured by the robot's LIDAR sensor, aligning it with the real environment.
 
-**LidarDisplay.cs**
+---
 
-    /// LidarDisplay is a Unity MonoBehaviour that displays Lidar points in the scene recieved from the ROS.
+## Implementation  
 
-**PositionManager.cs**
+### Unity Scene  
 
-	/// PositionManager is responsible for managing the position of the robot 
- 	/// in Unity and translating between Unity and ROS coordinate systems.
-	/// Contains methods to convert between Unity and ROS poses and vectors.
+We aimed to use the building blocks provided by the Mixed Reality Toolkit (MRTK) wherever possible. For other functionality, we created custom GameObjects with attached scripts. Below are the key objects used in the application:  
 
-**QRCodeManager.cs**
+- **MRTK XR Rig**: Handles mixed reality input simulation for testing within Unity.  
+- **Pinch Point Detector**: Detects pinch gestures using MRTK's ray interactors.  
+- **ROS Navigator**: Processes interactions and sends navigation commands to the robot.  
+- **QR Code Manager**: Recognizes QR codes and tracks the robot's coordinates.  
+- **WebSocket Manager**: Manages communication with ROS.  
+- **Lidar Display**: Visualizes scanned LIDAR points in 3D space.  
+- **Costmap Display**: Displays the robot’s movement costmap.  
+- **Path Display**: Shows the planned movement paths.  
+- **Hand Menu**: Provides the application’s graphical user interface (GUI).  
+- **GUI Logger**: Displays real-time logs.  
 
-	/// QRCodeManager is a Unity MonoBehaviour that manages the detection and tracking of QR codes of the robot.
+---
 
-**ConnectionStatusUpdater.cs**
+### Application Structure  
 
-	/// ConnectionStatusUpdater is a Unity MonoBehaviour that updates the connection status text based on the WebSocket connection state.
+#### Classes Overview  
 
-**RosBridgeClient.cs**
+- `Msg`: Abstract base class for all ROS message types.  
+- `Header`: Stores metadata for ROS messages.  
+- `Operation`: Defines publish and subscribe operations.  
+- `Time`: Represents time formats in ROS.  
+- `Topic`: Manages ROS topics such as LIDAR scans, costmaps, and navigation data.  
+- `Transform & TransformStamped`: Handles 3D position and rotation transformations.  
+- `PoseStamped`: Represents positional data with timestamps.  
+- `CostMapMsg`: Stores obstacle and movement cost data.  
+- `GoalPoseMsg`: Defines a goal position for the robot.  
+- `PlanMsg & PathMsg`: Represent planned movement paths.  
+- `ScanMsg`: Processes LIDAR scan data.  
+- `RosMessage & TFMessage`: Provide structured communication with ROS.  
+- `WebSocketClient`: Implements WebSocket communication.  
+- `RosBridgeClient`: Converts data between Unity and ROS formats.  
+- `ConnectionStatusUpdater`: Displays connection status on the GUI.  
+- `QRCodeManager`: Handles QR code detection and robot localization.  
+- `PositionManager`: Manages coordinate systems and transformations.  
+- `RosNavigator`: Handles pinch gestures for robot control.  
+- `PinchPointDetector`: Detects pinch gestures using MRTK.  
+- `GUILogger`: Logs messages in the GUI for debugging.  
 
-    /// Handles the messages recieved from the websocket.
+---
 
-**WebSocketClient.cs**
+### JSON Serialization  
 
-    /// WebSocketClient is a Unity MonoBehaviour that manages the connection to the Robot.
-    /// Uses the NativeWebSocket library to handle WebSocket communication
+The project uses optimized `JsonConverter` classes for efficient serialization and deserialization of ROS messages in Unity. This improves performance and reduces latency.  
 
-**RosMessage.cs**
+#### Key Converters  
 
-    /// RosMessage is a generic class that represents a message in ROS format.
+- `TimeJsonConverter` & `HeaderJsonConverter`: Handle ROS timestamps and message headers.  
+- `PoseJsonConverter` & `TransformJsonConverter`: Convert Unity position and orientation data to ROS-compatible formats.  
+- `CostMapMsgJsonConverter`, `GoalPoseMsgJsonConverter`, `PathMsgJsonConverter`, `ScanMsgJsonConverter`: Handle specialized ROS messages for navigation and sensor data.  
 
-**CostMapMsg.cs**
+---
 
-    /// CostMapMsg is a message type that contains information about a cost map,
-    /// including its resolution, dimensions, and origin.
+## Application Usage  
 
-**GoalPoseMsg.cs**
+### Graphical User Interface  
 
-    /// GoalPoseMsg is a message type that contains a pose (position and orientation) in 3D space.
+The application’s GUI is implemented using MRTK’s Hand Menu, which appears when the user raises their palm and disappears when they lower their hand. The menu includes options for enabling/disabling various visualizations and initiating the WebSocket connection.  
 
-**Msg.cs**
+#### Features  
 
-    /// Abstract class that serves as a base for all ROS message types.
+- **Lidar**: Displays scanned points from the robot’s LIDAR sensor.  
+- **Costmap**: Shows the calculated movement costmap.  
+- **Path**: Visualizes the planned movement path.  
+- **Pivots**: Displays reference points for coordinate systems.  
+- **Debug Log**: Enables an on-screen debugging log panel.  
 
-**PlanMsg.cs**
+---
 
-    /// An array of poses that represents a Path for a robot to follow
+### Display  
 
-**ScanMsg.cs** 
+The application renders LIDAR scan points in real-time as red cubes aligned with the real-world environment. The planned path updates continuously, and reference coordinate systems refresh dynamically.  
 
-    /// ScanMsg is a message type used in ROS to represent LIDAR scan data.
+---
 
-**Header.cs**
-   
-    /// Header is a common message header used in ROS messages.
+### Control  
 
-**Operation.cs**
+To control the robot:  
 
+1. Establish a network connection.  
+2. Scan the QR code on the robot.  
+3. Use hand-tracking rays to select a target position.  
+4. Pinch fingers together to place the robot at the desired location.  
+5. Release fingers to send the command and start movement.  
 
-    /// Defines the operation types for ROS messages.
+---
 
-**Time.cs**
+## Summary  
 
-	/// Defines the Time message type used in ROS messages.
+This project developed an interactive augmented reality (AR) application for Microsoft HoloLens 2, enabling remote control of a ROS-based robot. The Unity-powered system integrates MRTK, WebSocket communication, and real-time visualization of LIDAR data, costmaps, and planned paths.  
 
-**Topic.cs**
+Users control the robot through hand gestures, selecting destinations via pinch interactions. The application optimizes JSON processing for performance, ensuring low latency and reliable communication.  
 
-    /// Defines the topic names used in ROS messages.
- 
-## TODOs
- - [x] Implement GUI logger
-	 - [ ] Update Documentation
- - [x] Implement and optimize Lidar display
-	 - [x] Convert Lidar scans to world points
-	 - [x] Implment a display
-  	 - [ ] Optimize for large number of scans (Maybe rework the display?)
-	 - [ ] Update Documentation
- - [ ] Implement Costmap display
-	 - [ ] Convert Costmap JSONs to usable data
-	 - [ ] Implment a display
-	 - [ ] Update Documentation
- - [x] Iplement gesture controlled robot movement
- 	 - [x] Started implementation (RobotGestureControlV2 branch)
- 	 - [x] FIX - Pose doesn't work with ROS message, causes recursion error, might have to construct the message manually
-	 - [ ] Update Documentation
+Challenges included limited documentation for MRTK3, complex coordinate system conversions between ROS and Unity, and real-time rendering optimizations. These obstacles were successfully addressed, resulting in a functional and efficient AR interface.  
 
+---
+
+## References  
+
+- **Microsoft Mixed Reality Toolkit (MRTK3) Official Repository**  
+  [GitHub - MixedRealityToolkit](https://github.com/MixedRealityToolkit/MixedRealityToolkit-Unity)  
+- **ROS & Unity Coordinate System Conversion**  
+  [GitHub - ROSSharp](https://github.com/siemens/ros-sharp/wiki/Dev_ROSUnityCoordinateSystemConversion)  
