@@ -106,13 +106,6 @@ The application’s GUI is implemented using MRTK’s Hand Menu, which appears w
 - **Path**: Visualizes the planned movement path.  
 - **Pivots**: Displays reference points for coordinate systems.  
 - **Debug Log**: Enables an on-screen debugging log panel.  
-
----
-
-### Display  
-
-The application renders LIDAR scan points in real-time as red cubes aligned with the real-world environment. The planned path updates continuously, and reference coordinate systems refresh dynamically.  
-
 ---
 
 ### Control  
