@@ -5,8 +5,6 @@
 **Location:** Budapest, 2025
 
 ### Budapest University of Technology and Economics (BME)  
-****Faculty of Electrical Engineering and Informatics****  
-****Department of Automation and Applied Informatics****  
 ---
 
 ## Table of Contents  
