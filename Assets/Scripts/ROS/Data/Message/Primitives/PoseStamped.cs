@@ -1,5 +1,6 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
+    using Assets.Scripts.Json_Converter.Message.Primitives;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -9,21 +10,19 @@
     using UnityEngine;
 
     [JsonObject(MemberSerialization.OptIn)]
-    internal class PlanPose
+    [JsonConverter(typeof(PoseStampedJsonConverter))]
+    internal class PoseStamped
     {
         [JsonProperty]
-        Header header { get; set; }
+        public Header header { get; set; }
         [JsonProperty]
-        [JsonConverter(typeof(PoseJsonConverter))]
-        Pose pose { get; set; }
-
-        public PlanPose()
+        public Pose pose { get; set; }
+        public PoseStamped()
         {
-            this.header = new Header();
-            this.pose = new Pose();
+            header = new Header();
+            pose = new Pose();
         }
-
-        public PlanPose(Header header, Pose pose)
+        public PoseStamped(Header header, Pose pose)
         {
             this.header = header;
             this.pose = pose;

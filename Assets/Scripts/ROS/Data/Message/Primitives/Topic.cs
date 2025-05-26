@@ -1,7 +1,5 @@
 ﻿namespace Assets.Scripts.ROS.Data.Message.Primitives
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Defines the topic names used in ROS messages.
     /// </summary>
@@ -14,5 +12,6 @@
         public const string plan = "/plan";
         public const string plansmoothed = "/plan_smoothed";
         public const string globalpath = "/global_path"; //plan
+        public const string tf = "/tf";
     }
 }

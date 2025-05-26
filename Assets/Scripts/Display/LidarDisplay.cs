@@ -11,16 +11,20 @@
     internal class LidarDisplay : MonoBehaviour
     {
         [SerializeField]
-        private Mesh lidarPointMesh; // e.g., low-poly sphere or quad
+        private Mesh lidarPointMesh;
 
         [SerializeField]
-        private Material lidarPointMaterial; // Must support GPU instancing
+        private Material lidarPointMaterial;
 
         [SerializeField]
-        private float density = 5f;
+        private float density = 0.5f;
 
         [SerializeField]
-        private float pointScale = 0.05f;
+        private float pointScale = 0.5f;
+
+        [SerializeField]
+        [Range(1, 1023)]
+        private int maxPoints = 1023;
 
         private List<Matrix4x4> matrices = new List<Matrix4x4>();
         private Vector3[] points = new Vector3[0];
@@ -63,9 +67,9 @@
                 matrices.Add(matrix);
             }
 
-            for (int i = 0; i < matrices.Count; i += 1023)
+            for (int i = 0; i < matrices.Count; i += maxPoints)
             {
-                int batchCount = Mathf.Min(1023, matrices.Count - i);
+                int batchCount = Mathf.Min(maxPoints, matrices.Count - i);
                 Graphics.DrawMeshInstanced(
                     lidarPointMesh,
                     0,
@@ -87,11 +91,18 @@
 
                 float range = message.msg.ranges[i].Value;
                 float angle = message.msg.angle_min + message.msg.angle_increment * i;
-                Vector3 point = PositionManager.TranslateLidarToUnityVector(range, angle);
+                Vector3 point = PositionManager.ConvertLidarToUnityVector(range, angle);
 
-                bool tooClose = validPoints.Any(existingPoint =>
-                    Vector3.Distance(existingPoint, point) < density ||
-                    Vector3.Distance(point, Vector3.zero) < density);
+                point = new Vector3(
+                    Mathf.Round(point.x / pointScale) * pointScale,
+                    Mathf.Round(point.y / pointScale) * pointScale,
+                    Mathf.Round(point.z / pointScale) * pointScale
+                );
+
+                float pointSquaredDistanceToOrigin = point.sqrMagnitude;
+                bool tooClose = pointSquaredDistanceToOrigin < density * density ||
+                                validPoints.Any(existingPoint =>
+                                    (existingPoint - point).sqrMagnitude < density * density);
 
                 if (tooClose) continue;
 

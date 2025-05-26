@@ -15,8 +15,6 @@ public class RosNavigator : MonoBehaviour
     private WebSocketClient webSocketClient;
     [SerializeField]
     private PinchPointDetector pinchPointDetector;
-    [SerializeField]
-    private PositionManager positionManager;
 
     private MRTKRayInteractor lastPinchLocation;
     public void Update()
@@ -41,11 +39,32 @@ public class RosNavigator : MonoBehaviour
             Vector3 targetPosition = interactor.rayEndPoint;
 
             Vector3 q = interactor.rayEndPoint - interactor.rayOriginTransform.position;
+            q.y = 0;
             Quaternion quaternion = Quaternion.LookRotation(q);
 
-            Pose p = new Pose(targetPosition, quaternion);
+            Pose p = PositionManager.ConvertToROSPose(new Pose(targetPosition, quaternion));
 
-            positionManager.SendRobotTo(p);
+            string message = ConstructGoalPoseMsg(p);
+            webSocketClient.SendMessage(message);
         }
+    }
+
+    private string ConstructGoalPoseMsg(Pose pose)
+    {
+        var rosMessage = new RosMessage<GoalPoseMsg>(
+            Operation.publish,
+            "/goal_pose",
+            new GoalPoseMsg(
+                new Header(
+                    new Time((uint)DateTime.Now.Second, (uint)DateTime.Now.Millisecond),
+                    "GoalPose"
+                ),
+                pose
+            )
+        );
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new PoseJsonConverter());
+
+        return JsonConvert.SerializeObject(rosMessage, Formatting.None, settings);
     }
 }

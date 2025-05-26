@@ -40,7 +40,7 @@ public class PoseJsonConverter : JsonConverter<Pose>
                 string propertyName = (string)reader.Value;
                 if (propertyName == "position")
                 {
-                    reader.Read(); // start object
+                    reader.Read();
                     float x = 0, y = 0, z = 0;
                     while (reader.Read() && reader.TokenType != JsonToken.EndObject)
                     {
@@ -55,7 +55,7 @@ public class PoseJsonConverter : JsonConverter<Pose>
                 }
                 else if (propertyName == "orientation")
                 {
-                    reader.Read(); // start object
+                    reader.Read();
                     float x = 0, y = 0, z = 0, w = 1;
                     while (reader.Read() && reader.TokenType != JsonToken.EndObject)
                     {
@@ -68,6 +68,10 @@ public class PoseJsonConverter : JsonConverter<Pose>
                         else if (name == "w") w = val;
                     }
                     rotation = new Quaternion(x, y, z, w);
+                }
+                else
+                {
+                    Debug.LogError($"Unknown property: {propertyName}");
                 }
             }
             else if (reader.TokenType == JsonToken.EndObject)

@@ -4,8 +4,8 @@
     using Assets.Scripts.ROS.Data.Message.Primitives;
     using Newtonsoft.Json;
     using System.Collections.Generic;
-    using UnityEngine;
     using System.IO;
+    using UnityEngine;
 
     /// <summary>
     /// Handles the messages received from the websocket.
@@ -16,6 +16,10 @@
         private WebSocketClient webSocketClient;
         [SerializeField]
         private LidarDisplay lidarDisplay;
+        [SerializeField]
+        private PathDisplay pathDisplay;
+        [SerializeField]
+        private CostMapDisplay costMapDisplay;
 
         public void Start()
         {
@@ -36,7 +40,8 @@
                 Topic.costmap,
                 Topic.plan,
                 Topic.plansmoothed,
-                Topic.globalpath
+                Topic.globalpath,
+                Topic.tf
             };
 
             topics.ForEach(topic => webSocketClient.Subscribe(topic));
@@ -75,13 +80,20 @@
                     break;
                 case Topic.costmap:
                     RosMessage<CostMapMsg> costmapMessage = JsonConvert.DeserializeObject<RosMessage<CostMapMsg>>(jsonMessage);
-                    //handle costmap message here
+                    costMapDisplay.UpdateCostMap(costmapMessage);
                     break;
                 case Topic.plan:
                 case Topic.plansmoothed:
-                case Topic.globalpath:
                     //RosMessage<PlanMsg> planMessage = JsonConvert.DeserializeObject<RosMessage<PlanMsg>>(jsonMessage);
-                    //handle plan message here
+                    //Not used in the current version
+                    break;
+                case Topic.globalpath:
+                    RosMessage<PathMsg> globalPathMessage = JsonConvert.DeserializeObject<RosMessage<PathMsg>>(jsonMessage);
+                    pathDisplay.UpdatePath(globalPathMessage);
+                    break;
+                case Topic.tf:
+                    TFMessage tfMessage = JsonConvert.DeserializeObject<TFMessage>(jsonMessage);
+                    PositionManager.UpdateOffsets(tfMessage.transforms);
                     break;
                 default:
                     Debug.Log($"[ROSBridgeClient] Unknown topic: {topic}");
